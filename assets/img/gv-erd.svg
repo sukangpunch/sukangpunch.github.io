@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="594" height="180" viewBox="0 0 594 180">
+  <rect x="1" y="2" width="110" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="1" y="2" width="110" height="15" fill="#F2F2F2"/>
+  <text x="6" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">season</text>
+  <text x="6" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="6" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">season_key</text>
+  <text x="6" y="49" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">status</text>
+
+  <rect x="125" y="2" width="110" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="125" y="2" width="110" height="15" fill="#F2F2F2"/>
+  <text x="130" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">league</text>
+  <text x="130" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="130" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">min_lp / max_lp</text>
+
+  <rect x="254" y="2" width="112" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="254" y="2" width="112" height="15" fill="#F2F2F2"/>
+  <text x="259" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">users</text>
+  <text x="259" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="259" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">nickname</text>
+  <text x="259" y="49" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">xp</text>
+
+  <rect x="380" y="2" width="100" height="41" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="380" y="2" width="100" height="15" fill="#F2F2F2"/>
+  <text x="385" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">lesson</text>
+  <text x="385" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="385" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">title</text>
+
+  <rect x="1" y="91" width="162" height="63" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="1" y="91" width="162" height="15" fill="#F2F2F2"/>
+  <text x="6" y="102.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">user_league</text>
+  <text x="6" y="116" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="6" y="127" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK user_id</text>
+  <text x="6" y="138" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK league_id · season_id</text>
+  <text x="6" y="149" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">league_point</text>
+
+  <rect x="174" y="91" width="130" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="174" y="91" width="130" height="15" fill="#F2F2F2"/>
+  <text x="179" y="102.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">friends</text>
+  <text x="179" y="116" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="179" y="127" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK follower_id</text>
+  <text x="179" y="138" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK followee_id</text>
+
+  <rect x="315" y="91" width="128" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="315" y="91" width="128" height="15" fill="#F2F2F2"/>
+  <text x="320" y="102.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">social_feed</text>
+  <text x="320" y="116" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="320" y="127" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK actor_id</text>
+  <text x="320" y="138" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">event_type</text>
+
+  <rect x="454" y="91" width="139" height="63" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="454" y="91" width="139" height="15" fill="#F2F2F2"/>
+  <text x="459" y="102.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">lesson_submission</text>
+  <text x="459" y="116" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="459" y="127" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK user_id</text>
+  <text x="459" y="138" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK lesson_id</text>
+  <text x="459" y="149" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">accuracy</text>
+
+  <path d="M56 54 L56 66 L48 66 L48 91" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="60" y="64" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="52" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M180 54 L180 72 L82 72 L82 91" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="184" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="86" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M292 54 L292 78 L116 78 L116 91" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="296" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="120" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M310 54 L310 68 L239 68 L239 91" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="314" y="64" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="243" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+  <rect x="196" y="61" width="86" height="11" fill="#FFFFFF"/>
+  <text x="239" y="69.5" text-anchor="middle" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">follower · followee</text>
+
+  <path d="M328 54 L328 81 L379 81 L379 91" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="332" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="383" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M346 54 L346 74 L500 74 L500 91" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="350" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="504" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M430 43 L430 62 L548 62 L548 91" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="434" y="54" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="552" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <text x="593" y="176" text-anchor="end" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">전체 42개 중 핵심 8개 · 실선 DB FK, 점선 논리 FK · 순위는 Redis Sorted Set</text>
+</svg>

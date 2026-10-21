@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="594" height="180" viewBox="0 0 594 180">
+  <rect x="1" y="2" width="120" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="1" y="2" width="120" height="15" fill="#F2F2F2"/>
+  <text x="6" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">users</text>
+  <text x="6" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK user_id</text>
+  <text x="6" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">email</text>
+  <text x="6" y="49" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">has_face</text>
+
+  <rect x="135" y="2" width="145" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="135" y="2" width="145" height="15" fill="#F2F2F2"/>
+  <text x="140" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">faces</text>
+  <text x="140" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK face_id</text>
+  <text x="140" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK user_id</text>
+  <text x="140" y="49" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">rekognition_face_id</text>
+
+  <rect x="295" y="2" width="134" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="295" y="2" width="134" height="15" fill="#F2F2F2"/>
+  <text x="300" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">conference</text>
+  <text x="300" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK conference_id</text>
+  <text x="300" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">capacity</text>
+  <text x="300" y="49" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">has_sessions</text>
+
+  <rect x="444" y="2" width="149" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="444" y="2" width="149" height="15" fill="#F2F2F2"/>
+  <text x="449" y="13.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">session</text>
+  <text x="449" y="27" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK session_id</text>
+  <text x="449" y="38" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK conference_id</text>
+  <text x="449" y="49" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">capacity</text>
+
+  <rect x="1" y="91" width="180" height="63" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="1" y="91" width="180" height="15" fill="#F2F2F2"/>
+  <text x="6" y="102.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">reservation</text>
+  <text x="6" y="116" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK reservation_id</text>
+  <text x="6" y="127" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK user_id</text>
+  <text x="6" y="138" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK conference_id</text>
+  <text x="6" y="149" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">status (TEMPORARY/CONFIRMED)</text>
+
+  <rect x="198" y="91" width="154" height="52" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="198" y="91" width="154" height="15" fill="#F2F2F2"/>
+  <text x="203" y="102.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">reservation_session</text>
+  <text x="203" y="116" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="203" y="127" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK reservation_id</text>
+  <text x="203" y="138" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#111111">FK session_id</text>
+
+  <rect x="369" y="91" width="118" height="63" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1"/>
+  <rect x="369" y="91" width="118" height="15" fill="#F2F2F2"/>
+  <text x="374" y="102.5" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">attend</text>
+  <text x="374" y="116" font-family="Noto Sans KR" font-size="8.5" font-weight="700" fill="#111111">PK id</text>
+  <text x="374" y="127" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">user_id · conference_id</text>
+  <text x="374" y="138" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">session_id</text>
+  <text x="374" y="149" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">reservation_id</text>
+
+  <rect x="444" y="55" width="149" height="34" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="449" y="65" font-family="Noto Sans KR" font-size="9.5" font-weight="700" fill="#111111">Redis</text>
+  <text x="449" y="76" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">conference:{id} 참석자 Set · count</text>
+  <text x="449" y="86" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">failed:attend:events 실패 큐</text>
+
+  <path d="M121 28 L135 28" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="124" y="23" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="128" y="36" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+
+  <path d="M429 28 L444 28" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="432" y="23" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="437" y="36" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M61 54 L61 91" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="65" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="65" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M362 54 L362 69 L132 69 L132 91" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="366" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="136" y="89.2" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M181 122 L198 122" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="184" y="117" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="191" y="130" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M444 40 L436 40 L436 76 L275 76 L275 91" fill="none" stroke="#8C8C8C" stroke-width="1"/>
+  <text x="522" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="279" y="89.2" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M92 54 L92 82 L409 82 L409 91" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="96" y="65" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="413" y="89.2" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <path d="M393 54 L393 61 L420 61 L420 91" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="3 2"/>
+  <text x="397" y="70" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">1</text>
+  <text x="424" y="87" font-family="Noto Sans KR" font-size="8" font-weight="400" fill="#6E6E6E">N</text>
+
+  <text x="593" y="176" text-anchor="end" font-family="Noto Sans KR" font-size="8.5" font-weight="400" fill="#6E6E6E">실선 JPA 연관, 점선 ID만 저장(FK 없음)</text>
+</svg>

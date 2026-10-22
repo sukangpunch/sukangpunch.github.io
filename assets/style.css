@@ -311,7 +311,6 @@ html { scroll-padding-top: 88px; }
 /* ── 섹션 제목 + 영문 라벨 ── */
 .sec-title { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
 .sec-title h2 { margin: 0; }
-.sec-en { font-family: "DM Serif Display", Georgia, serif; font-size: 22px; color: #9a9a9a; white-space: nowrap; }
 
 /* ── 경력/교육 ── */
 .resume { margin-top: 80px; padding-top: 48px; border-top: 1px solid var(--ink); }
@@ -336,7 +335,6 @@ html { scroll-padding-top: 88px; }
   .rg { grid-template-columns: 1fr; gap: 10px; }
   .tl-h { flex-direction: column; gap: 2px; }
   .contact { flex-direction: column; align-items: flex-start; }
-  .sec-en { font-size: 17px; }
 }
 
 /* 사례 번호 배지 */

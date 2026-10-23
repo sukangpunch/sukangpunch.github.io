@@ -34,7 +34,7 @@
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.5; }
 .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
-.head { max-width: 1100px; display: grid; gap: 14px; }
+.head { max-width: 1100px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 h1 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
 .meta { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
 .meta code, .mono { font-family: var(--mono); font-size: 12px; }
@@ -141,7 +141,7 @@ svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-eve
 .zcol > .card { min-width: 0; }
 .card .flag { font-size: 10.5px; font-weight: 600; color: var(--muted); border: 1px solid var(--rule); border-radius: 999px; padding: 0 6px; margin-left: 6px; vertical-align: 1px; }
 .card footer .more { color: var(--accent); }
-.canvas.gridded { column-gap: 110px; row-gap: 56px; align-items: center; padding: 40px 56px 56px; }
+.canvas.gridded { --card-w: 256px; column-gap: 84px; row-gap: 48px; align-items: center; padding: 40px 56px 56px; }
 .canvas.gridded .card { border-top: 4px solid var(--tone); }
 .canvas.gridded .card.shared { box-shadow: 0 0 0 2px var(--tone); }
 .canvas.gridded .card.shared:hover, .canvas.gridded .card.shared.self { box-shadow: 0 0 0 2px var(--accent); }
@@ -320,6 +320,15 @@ function renderView(v) {
   });
   draw();
   ro = new ResizeObserver(draw); ro.observe(canvas);
+  centerOnShared();
+  document.fonts?.ready.then(centerOnShared);
+}
+// 장이 화면보다 넓으면 처음 열 때 가로 스크롤을 공통 테이블(유저) 카드 가운데에 맞춘다
+function centerOnShared() {
+  const u = Object.keys(T).find(t => T[t].shared), board = canvas?.parentElement;
+  if (!u || !board) return;
+  const el = cards[u];
+  board.scrollLeft = el.offsetLeft + el.offsetWidth / 2 - board.clientWidth / 2;
 }
 
 function card(t) {

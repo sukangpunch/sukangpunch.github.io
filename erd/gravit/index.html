@@ -211,13 +211,15 @@ const LEGEND = `<div class="legend">
 
 $('#meta').textContent = D.basis;
 
-const TABS = [{ id: 'map', name: '도메인 지도' }, ...D.views];
+// 지도가 없으면(테이블이 적은 프로젝트) 장만, 장이 하나면 탭 줄을 숨긴다
+const TABS = D.map ? [{ id: 'map', name: '도메인 지도' }, ...D.views] : D.views;
+$('#tabs').hidden = TABS.length < 2;
 $('#tabs').innerHTML = TABS.map(t => `<button type="button" role="tab" data-v="${t.id}">${esc(t.name)}</button>`).join('');
 $('#tabs').addEventListener('click', e => { const id = e.target.closest('[data-v]')?.dataset.v; if (id) show(id); });
 
 let cur = null, ro = null;
 function show(id) {
-  if (!TABS.some(t => t.id === id)) id = 'map';
+  if (!TABS.some(t => t.id === id)) id = TABS[0].id;
   close();
   document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === id)));
   if (ro) { ro.disconnect(); ro = null; }
@@ -524,7 +526,7 @@ panel.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && pinned) close(); });
 
-show(location.hash.slice(1) || 'map');
+show(location.hash.slice(1) || TABS[0].id);
 window.addEventListener('hashchange', () => show(location.hash.slice(1)));
 document.fonts?.ready.then(draw);
 window.addEventListener('resize', draw);

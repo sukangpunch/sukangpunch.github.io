@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>:root{color-scheme:light}body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>마패 ERD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* 도메인별 ERD(탭). 레이아웃: 도메인 구역을 격자에 깔고, 카드는 그 위, 컬럼 단위 연결선은 둘 사이 SVG 층. 클릭하면 오른쪽 패널에 컬럼 설명. */
+:root {
+  --bg: #f2f4f7; --surface: #ffffff; --ink: #172030; --muted: #566074; --faint: #8a93a4;
+  --rule: #d8dde6; --edge: #97a1b4; --accent: #2a5bd7; --accent-soft: #e4ebfb; --on-accent: #ffffff;
+  --t1: #2d6bd0; --t2: #0d877a; --t3: #4f5870; --t4: #c03f77; --t5: #7247cf; --t6: #2c8740; --t7: #be6417;
+  --font: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --card-w: 280px; --gap-x: 64px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f131a; --surface: #181e28; --ink: #e5e9f0; --muted: #a2abbb; --faint: #737d90;
+  --rule: #2a3240; --edge: #657088; --accent: #82a6ff; --accent-soft: #1d2a47; --on-accent: #0b1222;
+  --t1: #6b9cf0; --t2: #3fbfae; --t3: #9aa3ba; --t4: #ec79a8; --t5: #a88af0; --t6: #62c077; --t7: #eb9a52;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f131a; --surface: #181e28; --ink: #e5e9f0; --muted: #a2abbb; --faint: #737d90;
+  --rule: #2a3240; --edge: #657088; --accent: #82a6ff; --accent-soft: #1d2a47; --on-accent: #0b1222;
+  --t1: #6b9cf0; --t2: #3fbfae; --t3: #9aa3ba; --t4: #ec79a8; --t5: #a88af0; --t6: #62c077; --t7: #eb9a52;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.5; }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.head { max-width: 1100px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+h1 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+.meta { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.meta code, .mono { font-family: var(--mono); font-size: 12px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend svg { overflow: visible; }
+.tip { font-size: 13px; color: var(--muted); }
+.toggle { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); cursor: pointer; user-select: none; }
+.toggle input { width: 16px; height: 16px; accent-color: var(--accent); margin: 0; }
+
+.board { margin-top: 22px; overflow-x: auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.canvas { position: relative; display: grid; grid-template-columns: repeat(5, var(--card-w)); column-gap: var(--gap-x); row-gap: 72px;
+  width: max-content; padding: 40px 48px 48px; align-items: start; }
+.zone { margin: -16px; padding: 14px 16px 16px; border-radius: 14px; background: color-mix(in srgb, var(--tone) 6%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--tone) 22%, var(--bg)); }
+.zone-h { display: grid; gap: 1px; margin-bottom: 12px; }
+.zone-h b { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: var(--ink); }
+.zone-h b i { width: 10px; height: 10px; border-radius: 3px; background: var(--tone); display: inline-block; }
+.zone-h small { color: var(--muted); font-size: 12px; padding-left: 18px; }
+.zcols { display: flex; gap: var(--gap-x); align-items: flex-start; }
+.zcol { width: var(--card-w); display: grid; gap: 22px; }
+
+svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
+.edge path { fill: none; stroke: var(--edge); stroke-width: 1.3; }
+.edge path.line.logical { stroke-dasharray: 5 4; }
+.edge.u { display: none; }
+.canvas.show-u .edge.u, .canvas.focus .edge.u.on { display: inline; }
+.canvas.focus .edge:not(.on) { opacity: .1; }
+.edge.on path { stroke: var(--accent); stroke-width: 2; }
+
+.card { position: relative; z-index: 2; background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; cursor: pointer;
+  transition: opacity .15s, border-color .15s, box-shadow .15s; }
+.card:hover, .card.self { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.canvas.focus .card:not(.self):not(.near) { opacity: .32; }
+.card header { padding: 10px 12px 6px; display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.card header .kn { font-weight: 700; font-size: 15px; }
+.card header .pn { font-family: var(--mono); font-size: 11.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .desc { margin: 0; padding: 0 12px 8px; font-size: 12px; color: var(--muted); line-height: 1.45; }
+.rows { list-style: none; margin: 0; padding: 4px 0; border-top: 1px solid var(--rule); }
+.rows li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 6px; padding: 2.5px 12px 2.5px 8px; font-size: 12.5px; }
+.rows li.hl { background: var(--accent-soft); }
+.rows .b { font-family: var(--mono); font-size: 9.5px; font-weight: 500; text-align: center; border-radius: 4px; padding: 1px 0; letter-spacing: .02em; }
+.rows .b.pk { background: var(--ink); color: var(--surface); }
+.rows .b.fk { border: 1px solid var(--muted); color: var(--muted); }
+.rows .nm { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rows .nm em { font-style: normal; font-family: var(--mono); font-size: 11px; color: var(--faint); margin-left: 6px; }
+.rows .ty { font-size: 11px; color: var(--faint); }
+.card footer { border-top: 1px solid var(--rule); padding: 6px 12px 8px; font-size: 11.5px; color: var(--muted); display: grid; gap: 2px; }
+.card footer .ulink { color: var(--ink); }
+.card footer .ulink b { font-weight: 600; }
+
+.below { max-width: 1100px; margin-top: 34px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px 48px; }
+.below h2 { font-size: 16px; margin: 0 0 10px; }
+.below ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--muted); font-size: 13.5px; }
+.below li b { color: var(--ink); font-weight: 600; }
+
+/* 패널 */
+.panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100%); z-index: 20; background: var(--surface); border-left: 1px solid var(--rule);
+  box-shadow: -12px 0 32px rgb(0 0 0 / .12); transform: translateX(105%); transition: transform .2s ease; display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); padding-right: env(safe-area-inset-right, 0px); }
+.panel.open { transform: none; }
+.ph { padding: 18px 20px 12px; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; position: relative; }
+.ph .zn { font-size: 12px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
+.ph .zn i { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
+.ph h2 { margin: 0; font-size: 21px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding-right: 36px; }
+.ph h2 .mono { color: var(--muted); font-weight: 400; font-size: 13px; }
+.ph p { margin: 0; color: var(--muted); font-size: 13px; }
+.close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); color: var(--ink); font-size: 18px; cursor: pointer; line-height: 1; }
+.close:focus-visible, .pbody button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pbody { overflow-y: auto; padding: 14px 20px 28px; display: grid; gap: 22px; }
+.pbody h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; letter-spacing: .02em; }
+.colist { display: grid; gap: 0; }
+.co { padding: 9px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 3px; }
+.co .top { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.co .top b { font-size: 14px; }
+.co .top .mono { color: var(--muted); }
+.co .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tag { font-size: 11px; border: 1px solid var(--rule); color: var(--muted); border-radius: 999px; padding: 0 7px; }
+.tag.pk { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.tag.fk { border-color: var(--accent); color: var(--accent); }
+.co .nt { font-size: 12.5px; color: var(--ink); }
+.enums { display: flex; flex-wrap: wrap; gap: 4px; }
+.enums code { font-family: var(--mono); font-size: 11px; background: var(--bg); border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; color: var(--ink); }
+.rel { display: grid; gap: 6px; font-size: 13px; }
+.rel div { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; }
+.rel .mono { color: var(--muted); }
+.rel button { font: inherit; font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.rel .kind { font-size: 11px; color: var(--faint); }
+.idx { font-size: 12.5px; color: var(--muted); display: grid; gap: 4px; }
+@media (prefers-reduced-motion: reduce) { .panel, .card { transition: none; } }
+/* 도메인 장: 탭 + 지도 + 장별 ERD */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tabs button { font: inherit; font-size: 14px; font-weight: 600; color: var(--muted); background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.back { display: inline-block; margin-bottom: 14px; font-size: 13px; color: var(--accent); text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.tabs a { align-self: center; margin-left: 6px; font-size: 13px; color: var(--accent); }
+.vhint { margin: 0; font-size: 15px; color: var(--ink); }
+.card.ext { border-style: dashed; background: color-mix(in srgb, var(--surface) 70%, var(--bg)); }
+.card header .kn { white-space: nowrap; }
+.card header .pn { min-width: 0; }
+.zcol > .card { min-width: 0; }
+.card .flag { font-size: 10.5px; font-weight: 600; color: var(--muted); border: 1px solid var(--rule); border-radius: 999px; padding: 0 6px; margin-left: 6px; vertical-align: 1px; }
+.card footer .more { color: var(--accent); }
+.canvas.gridded { --card-w: 256px; column-gap: 84px; row-gap: 48px; align-items: center; padding: 40px 56px 56px; }
+.canvas.gridded .card { border-top: 4px solid var(--tone); }
+.canvas.gridded .card.shared { box-shadow: 0 0 0 2px var(--tone); }
+.canvas.gridded .card.shared:hover, .canvas.gridded .card.shared.self { box-shadow: 0 0 0 2px var(--accent); }
+.card header .kn { font-size: 16px; }
+.groups { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); }
+.grp { display: inline-flex; align-items: center; gap: 6px; }
+.grp i { width: 12px; height: 12px; border-radius: 3px; background: var(--tone); display: inline-block; }
+.grp.ext i { background: transparent; border: 1.5px dashed var(--tone); }
+.grp b { color: var(--ink); font-weight: 600; margin-right: 2px; }
+
+.mapbox { margin-top: 22px; overflow-x: auto; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding-block: 20px; }
+.mapbox svg { display: block; width: 100%; min-width: 760px; max-width: 1140px; height: auto; }
+.dm rect.box { fill: var(--surface); stroke: var(--rule); stroke-width: 1.2; }
+.dm.go { cursor: pointer; }
+.dm.go:hover rect.box, .dm.go:focus-visible rect.box { stroke: var(--accent); stroke-width: 2; }
+.dm:focus { outline: none; }
+.dm.aux rect.box { stroke-dasharray: 6 4; fill: transparent; }
+.dm .bar { stroke: none; }
+.dm .t { font-size: 19px; font-weight: 700; fill: var(--ink); }
+.dm .n { font-size: 13px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.dm .g { font-size: 13.5px; fill: var(--ink); }
+.dm .g tspan.c { fill: var(--muted); font-variant-numeric: tabular-nums; }
+.dm .h { font-size: 12px; fill: var(--muted); }
+.dm .cta { font-size: 12.5px; font-weight: 600; fill: var(--accent); }
+.ml path { fill: none; stroke: var(--edge); stroke-width: 1.6; }
+.ml.aux path { stroke-dasharray: 5 4; }
+.ml rect { fill: var(--bg); stroke: var(--rule); }
+.ml text { font-size: 12.5px; fill: var(--ink); font-weight: 600; text-anchor: middle; font-variant-numeric: tabular-nums; }
+.links { display: grid; gap: 10px; }
+.links div b { font-weight: 600; color: var(--ink); }
+.links code { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/#mp-erd">← 포트폴리오로</a>
+
+  <div class="head">
+    <h1>마패 ERD</h1>
+    <div class="meta" id="meta"></div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+  </div>
+  <div id="view"></div>
+</div>
+
+<aside class="panel" id="panel" aria-label="테이블 상세" aria-hidden="true">
+  <div class="ph" id="ph"></div>
+  <div class="pbody" id="pbody"></div>
+</aside>
+
+<script>
+const D = {"title":"마패 ERD","basis":"main 브랜치 기준","views":[{"id":"all","name":"전체","hint":"회원이 컨퍼런스·세션을 예약하고, 얼굴 인증에 성공하면 출석이 한 건 남는다","cols":3,"groups":[{"name":"회원 · 얼굴","hint":"회원 1명에 얼굴 ID 1개","tone":3,"tables":["users","faces"]},{"name":"컨퍼런스 · 예약","hint":"컨퍼런스 → 세션, 예약 ↔ 세션(N:M)","tone":1,"tables":["conference","session","reservation","reservation_session"]},{"name":"출석","hint":"얼굴 인증 성공 1건 = 출석 1건","tone":6,"tables":["attend"]},{"name":"이벤트 저장소","hint":"출석 이벤트를 JSON으로 적재(FK 없음)","tone":5,"tables":["evententry"]}],"tables":{"users":{"k":"회원","note":"회원. 전화번호가 예약과 회원을 잇는 키","cols":[{"n":"user_id","k":"회원ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"created_at","k":"생성일자","type":"timestamp(6)","easy":"일시","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"updated_at","k":"수정일자","type":"timestamp(6)","easy":"일시","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"email","k":"이메일","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"name","k":"이름","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"password","k":"비밀번호","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"phone","k":"전화번호","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":true,"d":"","note":"UNIQUE. 비회원 예약을 회원에 연결하는 키","enums":null},{"n":"is_deleted","k":"삭제 여부","type":"boolean","easy":"참/거짓","nn":false,"pk":false,"uq":false,"d":"","note":"소프트 삭제 플래그","enums":null},{"n":"role","k":"권한","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"권한 / 값: USER | ADMIN","enums":null},{"n":"has_face","k":"얼굴 등록 여부","type":"boolean","easy":"참/거짓","nn":false,"pk":false,"uq":false,"d":"","note":"얼굴 등록 여부(faces 행 유무와 동기화)","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[1,2],"group":0},"faces":{"k":"얼굴","note":"회원별 AWS Rekognition 얼굴 ID","cols":[{"n":"face_id","k":"얼굴ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"rekognition_face_id","k":"Rekognition 얼굴ID","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"AWS Rekognition 컬렉션의 FaceId","enums":null},{"n":"user_id","k":"회원ID","type":"bigint","easy":"숫자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[1,1],"group":0},"conference":{"k":"컨퍼런스","note":"컨퍼런스(행사)","cols":[{"n":"conference_id","k":"컨퍼런스ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"name","k":"컨퍼런스 이름","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"description","k":"설명","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"location","k":"장소","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"start_time","k":"시작일시","type":"timestamp(6)","easy":"일시","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"end_time","k":"종료일시","type":"timestamp(6)","easy":"일시","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"capacity","k":"정원","type":"integer","easy":"숫자","nn":true,"pk":false,"uq":false,"d":"","note":"정원","enums":null},{"n":"image_key","k":"대표 이미지 키","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"S3 객체 키(대표 이미지)","enums":null},{"n":"is_active","k":"활성 여부","type":"boolean","easy":"참/거짓","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"has_sessions","k":"세션 존재 여부","type":"boolean","easy":"참/거짓","nn":true,"pk":false,"uq":false,"d":"","note":"하위 세션 존재 여부","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[2,3],"group":1},"session":{"k":"세션","note":"컨퍼런스 하위 세션(강연)","cols":[{"n":"session_id","k":"세션ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"conference_id","k":"컨퍼런스ID","type":"bigint","easy":"숫자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"name","k":"세션 이름","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"capacity","k":"정원","type":"integer","easy":"숫자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"location","k":"장소","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"start_time","k":"시작일시","type":"timestamp(6)","easy":"일시","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"end_time","k":"종료일시","type":"timestamp(6)","easy":"일시","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"summary","k":"요약","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"speaker_name","k":"연사 이름","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"speaker_organization","k":"연사 소속","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"is_active","k":"활성 여부","type":"boolean","easy":"참/거짓","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"speaker_image_key","k":"연사 사진 키","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"S3 객체 키(연사 사진)","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[3,3],"group":1},"reservation":{"k":"예약","note":"컨퍼런스 예약. 비회원(이름·전화번호)으로 만들고 나중에 회원과 연결","cols":[{"n":"reservation_id","k":"예약ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"conference_id","k":"컨퍼런스ID","type":"bigint","easy":"숫자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"name","k":"예약자 이름","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"phone","k":"예약자 전화번호","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"예약자 전화번호(users.phone과 매칭)","enums":null},{"n":"status","k":"예약 상태","type":"varchar(255)","easy":"글자","nn":true,"pk":false,"uq":false,"d":"","note":"예약 상태 / 값: TEMPORARY | CONFIRMED","enums":null},{"n":"user_id","k":"회원ID","type":"bigint","easy":"숫자","nn":false,"pk":false,"uq":false,"d":"","note":"회원 연결 전 NULL","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[1,3],"group":1},"reservation_session":{"k":"예약 세션","note":"예약 ↔ 세션 N:M 조인 테이블","cols":[{"n":"reservation_session_id","k":"예약 세션ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"reservation_id","k":"예약ID","type":"bigint","easy":"숫자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"session_id","k":"세션ID","type":"bigint","easy":"숫자","nn":true,"pk":false,"uq":false,"d":"","note":"","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[3,2],"group":1},"attend":{"k":"출석","note":"출석 기록(얼굴 인증 성공 시 1건)","cols":[{"n":"id","k":"출석ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"user_id","k":"회원ID","type":"bigint","easy":"숫자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"reservation_id","k":"예약ID","type":"bigint","easy":"숫자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"reservation_session_id","k":"예약 세션ID","type":"bigint","easy":"숫자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"conference_id","k":"컨퍼런스ID","type":"bigint","easy":"숫자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null},{"n":"session_id","k":"세션ID","type":"bigint","easy":"숫자","nn":false,"pk":false,"uq":false,"d":"","note":"","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[2,2],"group":2},"evententry":{"k":"이벤트 저장소","note":"도메인 이벤트 저장소(AttendEvent를 JSON으로 적재)","cols":[{"n":"id","k":"이벤트 저장소ID","type":"bigint","easy":"숫자","nn":true,"pk":true,"uq":false,"d":"자동 증가","note":"","enums":null},{"n":"type","k":"이벤트 종류","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"이벤트 클래스 이름","enums":null},{"n":"content_type","k":"본문 형식","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"payload 형식(application/json)","enums":null},{"n":"payload","k":"이벤트 JSON","type":"varchar(255)","easy":"글자","nn":false,"pk":false,"uq":false,"d":"","note":"이벤트 JSON. varchar(255)라 길면 잘림 위험","enums":null},{"n":"timestamp","k":"발생 시각(ms)","type":"bigint","easy":"숫자","nn":true,"pk":false,"uq":false,"d":"","note":"epoch millis (System.currentTimeMillis)","enums":null}],"idx":[],"show":null,"ext":false,"shared":false,"pos":[2,1],"group":3}},"refs":[{"c":"reservation","cc":"conference_id","p":"conference","pc":"conference_id","one":false,"logical":false},{"c":"reservation","cc":"user_id","p":"users","pc":"user_id","one":false,"logical":false},{"c":"reservation_session","cc":"reservation_id","p":"reservation","pc":"reservation_id","one":false,"logical":false},{"c":"reservation_session","cc":"session_id","p":"session","pc":"session_id","one":false,"logical":false},{"c":"session","cc":"conference_id","p":"conference","pc":"conference_id","one":false,"logical":false},{"c":"faces","cc":"user_id","p":"users","pc":"user_id","one":true,"logical":true},{"c":"attend","cc":"user_id","p":"users","pc":"user_id","one":false,"logical":true},{"c":"attend","cc":"reservation_id","p":"reservation","pc":"reservation_id","one":false,"logical":true},{"c":"attend","cc":"reservation_session_id","p":"reservation_session","pc":"reservation_session_id","one":false,"logical":true},{"c":"attend","cc":"conference_id","p":"conference","pc":"conference_id","one":false,"logical":true},{"c":"attend","cc":"session_id","p":"session","pc":"session_id","one":false,"logical":true}],"cross":[],"impNames":{},"focus":"attend"}],"map":null};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const NS = 'http://www.w3.org/2000/svg';
+const STAMP = new Set(['created_at', 'updated_at']);
+const LEGEND = `<div class="legend">
+  <span><svg width="44" height="12"><path d="M2 6H42" stroke="var(--ink)" stroke-width="1.4" fill="none"/></svg>DB에 FK 제약 있음</span>
+  <span><svg width="44" height="12"><path d="M2 6H42" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/></svg>코드에서만 연결 (제약 없음)</span>
+  <span><svg width="30" height="12"><path d="M2 6H28M16 6L28 1M16 6L28 11" stroke="var(--ink)" stroke-width="1.4" fill="none"/></svg>여러 행 쪽</span>
+  <span><svg width="30" height="12"><path d="M2 6H28M21 1V11" stroke="var(--ink)" stroke-width="1.4" fill="none"/></svg>한 행 쪽</span>
+  <span><b class="mono" style="background:var(--ink);color:var(--surface);border-radius:4px;padding:0 4px;font-size:10px">PK</b>기본 키</span>
+  <span><b class="mono" style="border:1px solid var(--muted);border-radius:4px;padding:0 4px;font-size:10px">FK</b>다른 테이블을 가리킴</span>
+  <span class="tip">카드에 마우스를 올리면 그 카드의 선만, 누르면 전체 컬럼 설명이 보입니다.</span>
+</div>`;
+
+$('#meta').textContent = D.basis;
+
+// 지도가 없으면(테이블이 적은 프로젝트) 장만, 장이 하나면 탭 줄을 숨긴다
+const TABS = D.map ? [{ id: 'map', name: '도메인 지도' }, ...D.views] : D.views;
+$('#tabs').hidden = TABS.length < 2;
+$('#tabs').innerHTML = TABS.map(t => `<button type="button" role="tab" data-v="${t.id}">${esc(t.name)}</button>`).join('');
+$('#tabs').addEventListener('click', e => { const id = e.target.closest('[data-v]')?.dataset.v; if (id) show(id); });
+
+let cur = null, ro = null;
+function show(id) {
+  if (!TABS.some(t => t.id === id)) id = TABS[0].id;
+  close();
+  document.querySelectorAll('#tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.v === id)));
+  if (ro) { ro.disconnect(); ro = null; }
+  cur = id === 'map' ? null : D.views.find(v => v.id === id);
+  if (cur) renderView(cur); else renderMap();
+  if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id);
+}
+
+// ── 도메인 지도 ──
+const BW = 300, BH = 170, UW = 220, UH = 100;
+function renderMap() {
+  const M = D.map, POS = M.pos;
+  const rect = id => id === 'center' ? { x: POS.center[0], y: POS.center[1], w: UW, h: UH } : { x: POS[id][0], y: POS[id][1], w: BW, h: BH };
+  const clip = (r, tx, ty) => { // 상자 중심에서 (tx,ty) 쪽으로 나가는 테두리 점
+    const cx = r.x + r.w / 2, cy = r.y + r.h / 2, dx = tx - cx, dy = ty - cy;
+    const s = Math.min(Math.abs((r.w / 2) / (dx || 1e-9)), Math.abs((r.h / 2) / (dy || 1e-9)));
+    return [cx + dx * s, cy + dy * s];
+  };
+  let lines = '';
+  M.links.forEach(l => {
+    const A = rect(l.a), B = rect(l.b);
+    const ac = [A.x + A.w / 2, A.y + A.h / 2], bc = [B.x + B.w / 2, B.y + B.h / 2];
+    const [x1, y1] = clip(A, ...bc), [x2, y2] = clip(B, ...ac);
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    const label = `관계 ${l.refs.length}개`;
+    lines += `<g class="ml${l.a.startsWith('aux') ? ' aux' : ''}"><title>${esc(l.refs.join('\n'))}</title>
+      <path d="M${x1} ${y1}L${x2} ${y2}" marker-end="url(#arr)"${l.both ? ' marker-start="url(#arr)"' : ''}/>
+      <rect x="${mx - 38}" y="${my - 12}" width="76" height="24" rx="12"/><text x="${mx}" y="${my + 4.5}">${label}</text></g>`;
+  });
+  // 부속 상자: 테이블 이름을 한 줄 34자 안쪽으로 나눠 적는다
+  const wrap = names => names.reduce((ls, n) => { const l = ls[ls.length - 1]; if (l && (l + ', ' + n).length <= 34) ls[ls.length - 1] = l + ', ' + n; else ls.push(n); return ls; }, []);
+  let boxes = M.domains.map(d => {
+    const [x, y] = POS[d.id], go = !d.id.startsWith('aux');
+    const tone = go ? `var(--t${d.tone})` : 'var(--faint)';
+    const body = d.groups.length
+      ? d.groups.map((g, i) => `<text class="g" x="${x + 20}" y="${y + 84 + i * 21}">${esc(g.name)} <tspan class="c">${g.n}</tspan></text>`).join('')
+      : wrap(d.tables).map((l, i) => `<text class="g" x="${x + 20}" y="${y + 80 + i * 20}"><tspan class="c">${esc(l)}</tspan></text>`).join('') + `<text class="h" x="${x + 20}" y="${y + BH - 18}">${esc(d.hint)}</text>`;
+    return `<g class="dm${go ? ' go' : ' aux'}" ${go ? `data-v="${d.id}" tabindex="0" role="button" aria-label="${esc(d.name)} ERD 보기"` : ''}>
+      <rect class="box" x="${x}" y="${y}" width="${BW}" height="${BH}" rx="12"/>
+      <rect class="bar" x="${x}" y="${y + 18}" width="4" height="30" fill="${tone}"/>
+      <text class="t" x="${x + 20}" y="${y + 40}">${esc(d.name)}</text>
+      <text class="n" x="${x + BW - 20}" y="${y + 40}" text-anchor="end">테이블 ${d.n}개</text>
+      ${body}
+      ${go ? `<text class="cta" x="${x + BW - 20}" y="${y + BH - 16}" text-anchor="end">ERD 보기 →</text>` : ''}</g>`;
+  }).join('');
+  const [ux, uy] = POS.center;
+  boxes += `<g class="dm"><rect class="box" x="${ux}" y="${uy}" width="${UW}" height="${UH}" rx="12" style="stroke:var(--ink);stroke-width:1.6"/>
+    <text class="t" x="${ux + UW / 2}" y="${uy + 44}" text-anchor="middle">${esc(M.center.name)}</text>
+    <text class="n" x="${ux + UW / 2}" y="${uy + 68}" text-anchor="middle">${esc(M.center.sub)}</text></g>`;
+
+  $('#view').innerHTML = `<div class="mapbox"><svg viewBox="0 0 ${M.w || 1020} ${M.h}" role="img" aria-label="도메인 지도">
+      <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--edge)"/></marker></defs>
+      ${lines}${boxes}</svg></div>`;
+  document.querySelectorAll('.dm.go').forEach(g => {
+    g.addEventListener('click', () => show(g.dataset.v));
+    g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(g.dataset.v); } });
+  });
+}
+
+// ── 도메인 ERD 장 ──
+// 카드는 격자(유저 가운데, 관련 테이블 상하좌우)에 놓고, 선은 가까운 면끼리 꺾은선으로 잇는다.
+let cards = {}, edgeEls = [], canvas = null, svg = null, T = {}, V = null, fkCols = {};
+function renderView(v) {
+  V = v; T = v.tables; cards = {}; edgeEls = []; fkCols = {};
+  v.refs.forEach(r => { (fkCols[r.c] ||= new Set()).add(r.cc); });
+  v.cross.forEach(r => { if (T[r.c]) (fkCols[r.c] ||= new Set()).add(r.cc); });
+  // 읽는 순서: PK → FK → 나머지(원래 순서) → deleted_at
+  Object.entries(T).forEach(([t, x]) => {
+    const fks = fkCols[t] || new Set();
+    const rank = c => c.pk ? 0 : fks.has(c.n) ? 1 : c.n === 'deleted_at' ? 3 : 2;
+    x.cols = x.cols.map((c, i) => [c, i]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]).map(([c]) => c);
+  });
+  const groupsH = v.groups.map(g => `<span class="grp${g.ext ? ' ext' : ''}" style="--tone:var(--t${g.tone})"><i></i><b>${esc(g.name)}</b>${esc(g.hint)}</span>`).join('');
+  $('#view').innerHTML = `<div class="head" style="margin-top:18px">
+      <p class="vhint">${esc(v.hint)}</p>
+      <div class="groups">${groupsH}</div>
+      ${LEGEND}</div>
+    <div class="board"><div class="canvas gridded" id="canvas" style="grid-template-columns:repeat(${v.cols}, var(--card-w))"><svg class="edges" id="edges" aria-hidden="true"></svg></div></div>`;
+  canvas = $('#canvas'); svg = $('#edges');
+  Object.keys(T).forEach(t => {
+    const el = card(t);
+    el.style.gridRow = T[t].pos[0]; el.style.gridColumn = T[t].pos[1];
+    el.style.setProperty('--tone', `var(--t${v.groups[T[t].group].tone})`);
+    canvas.appendChild(el);
+  });
+  v.refs.forEach((r, i) => {
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'edge');
+    const line = document.createElementNS(NS, 'path');
+    line.setAttribute('class', 'line' + (r.logical ? ' logical' : ''));
+    const mk = document.createElementNS(NS, 'path');
+    g.append(line, mk);
+    svg.appendChild(g);
+    edgeEls.push({ r, g, line, mk, i });
+  });
+  Object.entries(cards).forEach(([t, el]) => {
+    el.addEventListener('mouseenter', () => { if (!pinned) focus(t); });
+    el.addEventListener('mouseleave', () => { if (!pinned) clearFocus(); });
+    el.addEventListener('click', () => open(t));
+    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(t); } });
+  });
+  draw();
+  ro = new ResizeObserver(draw); ro.observe(canvas);
+  centerOnShared();
+  document.fonts?.ready.then(centerOnShared);
+}
+// 장이 화면보다 넓으면 처음 열 때 가로 스크롤을 그 장의 중심 카드(focus) 가운데에 맞춘다
+function centerOnShared() {
+  const u = V.focus, board = canvas?.parentElement;
+  if (!u || !board) return;
+  const el = cards[u];
+  board.scrollLeft = el.offsetLeft + el.offsetWidth / 2 - board.clientWidth / 2;
+}
+
+function card(t) {
+  const x = T[t];
+  const el = document.createElement('article');
+  el.className = 'card' + (x.ext ? ' ext' : '') + (x.shared ? ' shared' : ''); el.tabIndex = 0; el.dataset.t = t;
+  el.setAttribute('aria-label', `${x.k} (${t}) 상세 열기`);
+  const fks = fkCols[t] || new Set();
+  const body = x.cols.filter(c => !STAMP.has(c.n));
+  const vis = x.show ? body.filter(c => x.show.includes(c.n)) : body;
+  const rows = vis.map(c => {
+    const b = c.pk ? '<span class="b pk">PK</span>' : fks.has(c.n) ? '<span class="b fk">FK</span>' : '<span></span>';
+    return `<li data-c="${esc(c.n)}" title="${esc(c.n + ' · ' + c.type + (c.note ? ' · ' + c.note : ''))}">${b}<span class="nm">${esc(c.k || c.n)}<em>${esc(c.n)}</em></span><span class="ty">${esc(c.easy)}</span></li>`;
+  }).join('');
+  const stamps = x.cols.filter(c => STAMP.has(c.n)).map(c => c.n);
+  const foot = [];
+  const imp = {};
+  V.cross.filter(r => r.imp && r.c === t).forEach(r => (imp[r.p] ||= []).push(r.cc));
+  Object.entries(imp).forEach(([p, cs]) => foot.push(`<span class="ulink">${esc(V.impNames[p])} 연결: <b class="mono">${cs.map(esc).join(', ')}</b></span>`));
+  if (vis.length < body.length) foot.push(`<span class="more">컬럼 ${body.length - vis.length}개 더 · 눌러서 전체 보기</span>`);
+  if (stamps.length && !x.show) foot.push(`<span>생성·수정 시각 기록 <span class="mono">(${stamps.join(', ')})</span></span>`);
+  const flag = x.ext ? '<span class="flag">다른 장</span>' : x.shared ? '<span class="flag">공통</span>' : '';
+  const desc = x.note.length > 70 ? x.note.slice(0, 68) + '…' : x.note;
+  el.innerHTML = `<header><span class="kn">${esc(x.k)}${flag}</span><span class="pn">${esc(t)}</span></header>${x.show ? '' : `<p class="desc">${esc(desc)}</p>`}<ul class="rows">${rows}</ul>${foot.length ? `<footer>${foot.join('')}</footer>` : ''}`;
+  cards[t] = el;
+  return el;
+}
+
+function box(t) {
+  const cv = canvas.getBoundingClientRect(), r = cards[t].getBoundingClientRect();
+  const l = r.left - cv.left, tp = r.top - cv.top;
+  return { l, r: l + r.width, t: tp, b: tp + r.height, cx: l + r.width / 2, cy: tp + r.height / 2 };
+}
+function rowY(t, c) {
+  const row = cards[t].querySelector(`li[data-c="${CSS.escape(c)}"]`);
+  if (!row) return null;
+  const rr = row.getBoundingClientRect();
+  return rr.top + rr.height / 2 - canvas.getBoundingClientRect().top;
+}
+const OUT = { l: [-1, 0], r: [1, 0], t: [0, -1], b: [0, 1] };
+// 꺾은선(모서리 둥글게)
+function poly(p, rad = 6) {
+  let d = `M${p[0][0]} ${p[0][1]}`;
+  for (let i = 1; i < p.length - 1; i++) {
+    const [x0, y0] = p[i - 1], [x1, y1] = p[i], [x2, y2] = p[i + 1];
+    const r1 = Math.min(rad, Math.hypot(x1 - x0, y1 - y0) / 2), r2 = Math.min(rad, Math.hypot(x2 - x1, y2 - y1) / 2);
+    const u = [Math.sign(x1 - x0), Math.sign(y1 - y0)], w = [Math.sign(x2 - x1), Math.sign(y2 - y1)];
+    d += `L${x1 - u[0] * r1} ${y1 - u[1] * r1}Q${x1} ${y1} ${x1 + w[0] * r2} ${y1 + w[1] * r2}`;
+  }
+  const z = p[p.length - 1];
+  return d + `L${z[0]} ${z[1]}`;
+}
+
+function draw() {
+  if (!canvas || !canvas.isConnected) return;
+  svg.setAttribute('viewBox', `0 0 ${canvas.scrollWidth} ${canvas.scrollHeight}`);
+  const cs = getComputedStyle(canvas);
+  const gx = parseFloat(cs.columnGap) / 2, gy = parseFloat(cs.rowGap) / 2;
+  // 1) 선마다 방향(가로/세로)과 양 끝이 붙을 면
+  const E = edgeEls.map(e => {
+    const A = box(e.r.c), B = box(e.r.p);
+    const horiz = A.r + 10 < B.l || B.r + 10 < A.l;
+    const ca = horiz ? (B.cx > A.cx ? 'r' : 'l') : (B.cy > A.cy ? 'b' : 't');
+    const pa = { r: 'l', l: 'r', b: 't', t: 'b' }[ca];
+    return { e, A, B, horiz, ca, pa };
+  });
+  // 2) 같은 카드·같은 면에 붙는 끝점은 고르게 나눠 놓는다(가로선 자식 끝은 FK 행 높이 그대로)
+  const slots = {};
+  E.forEach(x => {
+    if (!x.horiz) (slots[x.e.r.c + ':' + x.ca] ||= []).push([x, 'c']);
+    (slots[x.e.r.p + ':' + x.pa] ||= []).push([x, 'p']);
+  });
+  Object.entries(slots).forEach(([k, list]) => {
+    const [t, side] = k.split(':'), bx = box(t), vert = side === 'l' || side === 'r';
+    const other = ([x, end]) => { const o = end === 'c' ? x.B : x.A; return vert ? o.cy : o.cx; };
+    list.sort((a, b) => other(a) - other(b));
+    list.forEach(([x, end], i) => {
+      let pt;
+      if (vert) {
+        const y = list.length === 1 ? (rowY(x.e.r.p, x.e.r.pc) ?? bx.cy) : bx.t + 34 + (i + 1) * (bx.b - bx.t - 44) / (list.length + 1);
+        pt = [side === 'l' ? bx.l : bx.r, y];
+      } else {
+        const xx = list.length === 1 ? bx.cx : bx.l + 24 + (i + 1) * (bx.r - bx.l - 48) / (list.length + 1);
+        pt = [xx, side === 't' ? bx.t : bx.b];
+      }
+      x[end] = pt; x[end + 'n'] = list.length;
+    });
+  });
+  E.forEach(x => { if (x.horiz) { x.c = [x.ca === 'l' ? x.A.l : x.A.r, rowY(x.e.r.c, x.e.r.cc) ?? x.A.cy]; x.cn = 1; } });
+  // 한쪽 끝이 그 면을 혼자 쓰면 반대쪽 높이(가로선)·위치(세로선)에 맞춰 곧은 선으로
+  const inside = (v, lo, hi) => v >= lo && v <= hi;
+  E.forEach(x => {
+    if (x.horiz) {
+      if (x.pn === 1 && inside(x.c[1], x.B.t + 30, x.B.b - 10)) x.p[1] = x.c[1];
+    } else if (x.cn === 1 && x.pn > 1 && inside(x.p[0], x.A.l + 16, x.A.r - 16)) x.c[0] = x.p[0];
+    else if (x.pn === 1 && x.cn > 1 && inside(x.c[0], x.B.l + 16, x.B.r - 16)) x.p[0] = x.c[0];
+  });
+  // 3) 꺾이는 선은 부모 쪽 틈 가운데 통로로. 같은 통로를 쓰는 선은 간격을 둔다
+  const lanes = {};
+  E.forEach(x => {
+    const [a, b] = [x.c, x.p];
+    x.straight = x.horiz ? Math.abs(a[1] - b[1]) < 1.5 : Math.abs(a[0] - b[0]) < 1.5;
+    if (x.straight) return;
+    x.base = x.horiz ? (x.pa === 'l' ? x.B.l - gx : x.B.r + gx) : (x.pa === 't' ? x.B.t - gy : x.B.b + gy);
+    (lanes[(x.horiz ? 'h' : 'v') + Math.round(x.base)] ||= []).push(x);
+  });
+  Object.values(lanes).forEach(list => {
+    const mid = x => x.horiz ? (x.c[1] + x.p[1]) / 2 : (x.c[0] + x.p[0]) / 2;
+    list.sort((a, b) => mid(a) - mid(b));
+    list.forEach((x, i) => { x.ch = x.base + (i - (list.length - 1) / 2) * 9; });
+  });
+  E.forEach(x => {
+    const { e, c: a, p: b } = x;
+    const pts = x.straight ? [a, b] : x.horiz ? [a, [x.ch, a[1]], [x.ch, b[1]], b] : [a, [a[0], x.ch], [b[0], x.ch], b];
+    e.line.setAttribute('d', poly(pts));
+    const [ox, oy] = OUT[x.ca], [qx, qy] = OUT[x.pa];
+    const childMk = e.r.one
+      ? `M${a[0] + ox * 8 - oy * 5} ${a[1] + oy * 8 - ox * 5}L${a[0] + ox * 8 + oy * 5} ${a[1] + oy * 8 + ox * 5}`
+      : `M${a[0] + ox * 12} ${a[1] + oy * 12}L${a[0] - oy * 5} ${a[1] - ox * 5}M${a[0] + ox * 12} ${a[1] + oy * 12}L${a[0] + oy * 5} ${a[1] + ox * 5}`;
+    e.mk.setAttribute('d', `${childMk}M${b[0] + qx * 7 - qy * 5} ${b[1] + qy * 7 - qx * 5}L${b[0] + qx * 7 + qy * 5} ${b[1] + qy * 7 + qx * 5}`);
+  });
+}
+
+// 초점(마우스 올림·고정)
+let pinned = null;
+function focus(t) {
+  clearFocus();
+  if (!t) return;
+  canvas.classList.add('focus');
+  cards[t].classList.add('self');
+  edgeEls.forEach(({ r, g }) => {
+    if (r.c !== t && r.p !== t) return;
+    g.classList.add('on');
+    cards[r.c === t ? r.p : r.c].classList.add('near');
+    cards[r.c].querySelector(`li[data-c="${CSS.escape(r.cc)}"]`)?.classList.add('hl');
+    cards[r.p].querySelector(`li[data-c="${CSS.escape(r.pc)}"]`)?.classList.add('hl');
+  });
+}
+function clearFocus() {
+  canvas?.classList.remove('focus');
+  document.querySelectorAll('.card.self,.card.near').forEach(c => c.classList.remove('self', 'near'));
+  document.querySelectorAll('.edge.on').forEach(g => g.classList.remove('on'));
+  document.querySelectorAll('.rows li.hl').forEach(l => l.classList.remove('hl'));
+}
+
+// 패널
+const panel = $('#panel');
+function link(t) { return T[t] ? `<button type="button" data-go="${esc(t)}">${esc(T[t].k)}</button>` : `<span class="mono">${esc(t)}</span>`; }
+function open(t) {
+  pinned = t; focus(t);
+  const x = T[t], z = V.groups[x.group];
+  $('#ph').innerHTML = `<span class="zn"><i style="background:var(--t${z.tone})"></i>${esc(V.name)} · ${esc(z.name)}</span>
+    <h2>${esc(x.k)}<span class="mono">${esc(t)}</span></h2><p>${esc(x.note)}</p>
+    <button class="close" type="button" id="close" aria-label="닫기">×</button>`;
+  const fks = fkCols[t] || new Set();
+  const cols = x.cols.map(c => {
+    const tags = [];
+    if (c.pk) tags.push('<span class="tag pk">PK</span>');
+    if (fks.has(c.n)) tags.push('<span class="tag fk">FK</span>');
+    tags.push(`<span class="tag">${esc(c.easy)} · <span class="mono">${esc(c.type)}</span></span>`);
+    tags.push(`<span class="tag">${c.nn ? '필수' : '비어도 됨'}</span>`);
+    if (c.uq) tags.push('<span class="tag">중복 불가</span>');
+    if (c.d) tags.push(`<span class="tag">기본값 ${esc(c.d)}</span>`);
+    return `<div class="co"><div class="top"><b>${esc(c.k || c.n)}</b><span class="mono">${esc(c.n)}</span></div>
+      <div class="tags">${tags.join('')}</div>
+      ${c.note ? `<div class="nt">${esc(c.note)}</div>` : ''}
+      ${c.enums ? `<div class="enums">${c.enums.map(v => `<code>${esc(v)}</code>`).join('')}</div>` : ''}</div>`;
+  }).join('');
+  const rel = [...V.refs, ...V.cross.filter(r => !r.drawn)];
+  const out = rel.filter(r => r.c === t);
+  const inn = rel.filter(r => r.p === t);
+  const otherOf = r => r.other || V.cross.find(c => c.c === r.c && c.cc === r.cc && c.p === r.p)?.other;
+  const kind = r => `<span class="kind">${r.logical ? '코드에서만' : 'FK 제약'}${r.one ? ' · 1:1' : ''}${otherOf(r) ? ` · ${esc(otherOf(r))} 장` : ''}${r.imp ? ' · 공통' : ''}</span>`;
+  const outH = out.length ? out.map(r => `<div><span class="mono">${esc(r.cc)}</span> → ${link(r.p)}<span class="mono">.${esc(r.pc)}</span> ${kind(r)}</div>`).join('') : '<div class="kind">없음</div>';
+  const inH = inn.length ? inn.map(r => `<div>${link(r.c)}<span class="mono">.${esc(r.cc)}</span> → <span class="mono">${esc(r.pc)}</span> ${kind(r)}</div>`).join('') : '<div class="kind">없음</div>';
+  const usersNote = x.shared ? '<div class="kind">유저는 모든 장에 있어서, 이 장과 이어진 관계만 적었습니다.</div>' : '';
+  const idx = x.idx.filter(i => i.uq).map(i => `<div>중복 불가 묶음: <span class="mono">(${i.cols.map(esc).join(', ')})</span></div>`).join('');
+  $('#pbody').innerHTML = `<section><h3>이 테이블이 가리키는 곳</h3><div class="rel">${outH}</div></section>
+    <section><h3>이 테이블을 가리키는 곳</h3><div class="rel">${inH}${usersNote}</div></section>
+    ${idx ? `<section><h3>인덱스 제약</h3><div class="idx">${idx}</div></section>` : ''}
+    <section><h3>컬럼 ${x.cols.length}개</h3><div class="colist">${cols}</div></section>`;
+  panel.classList.add('open'); panel.setAttribute('aria-hidden', 'false');
+  $('#close').addEventListener('click', close);
+  $('#pbody').scrollTop = 0;
+}
+function close() { pinned = null; clearFocus(); panel.classList.remove('open'); panel.setAttribute('aria-hidden', 'true'); }
+panel.addEventListener('click', e => {
+  const t = e.target.closest('[data-go]')?.dataset.go;
+  if (!t) return;
+  open(t);
+  cards[t].scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && pinned) close(); });
+
+show(location.hash.slice(1) || TABS[0].id);
+window.addEventListener('hashchange', () => show(location.hash.slice(1)));
+document.fonts?.ready.then(draw);
+window.addEventListener('resize', draw);
+</script>
+
+</body>
+</html>

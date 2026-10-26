@@ -23,7 +23,7 @@
     </nav>
   </div>
 </header>
-<aside class="side" id="side" aria-label="목차"><div class="side-h">ON THIS PAGE</div><ol><li class="sp"><a href="#intro">소개</a></li><li class="sp"><a href="#toc">개선 사례 요약</a></li><li class="sp grp"><a href="#projects">프로젝트</a><ol class="grp-ol"><li class="sp p2"><a href="#easyselect">이지셀렉(Easy Select)</a><ol><li><a href="#es-infra" class="infra">인프라 · ERD</a></li><li><a href="#es-1"><span class="no">1</span>무중단 배포 · ASG</a></li><li><a href="#es-2"><span class="no">2</span>DB 병목 · SQS</a></li><li><a href="#es-3"><span class="no">3</span>JVM 메모리</a></li><li><a href="#es-4"><span class="no">4</span>GPU 워커 전환</a></li></ol></li><li class="sp p2"><a href="#gravit">그래빗(Gravit)</a><ol><li><a href="#gv-infra" class="infra">인프라 · ERD</a></li><li><a href="#gv-1"><span class="no">1</span>랭킹 인덱스 · Redis</a></li><li><a href="#gv-2"><span class="no">2</span>친구 검색 재측정</a></li><li><a href="#gv-3"><span class="no">3</span>공용 재시도 큐</a></li></ol></li><li class="sp p2"><a href="#maskpass">마패(Mask Pass)</a><ol><li><a href="#mp-infra" class="infra">인프라 · ERD</a></li><li><a href="#mp-1"><span class="no">1</span>SSE 좀비 소켓</a></li><li><a href="#mp-2"><span class="no">2</span>보상 트랜잭션</a></li><li><a href="#mp-3"><span class="no">3</span>비동기 분리</a></li></ol></li></ol></li><li class="sp"><a href="#bio">교육/활동/자격증</a></li></ol></aside>
+<aside class="side" id="side" aria-label="목차"><div class="side-h">ON THIS PAGE</div><ol><li class="sp"><a href="#intro">소개</a></li><li class="sp"><a href="#toc">개선 사례 요약</a></li><li class="sp grp"><a href="#projects">프로젝트</a><ol class="grp-ol"><li class="sp p2"><a href="#easyselect">이지셀렉(Easy Select)</a><ol><li><a href="#es-infra" class="infra">인프라 · ERD</a></li><li><a href="#es-4"><span class="no">1</span>GPU 워커 전환</a></li><li><a href="#es-2"><span class="no">2</span>DB 병목 · SQS</a></li><li><a href="#es-1"><span class="no">3</span>무중단 배포 · ASG</a></li><li><a href="#es-3"><span class="no">4</span>JVM 메모리</a></li></ol></li><li class="sp p2"><a href="#gravit">그래빗(Gravit)</a><ol><li><a href="#gv-infra" class="infra">인프라 · ERD</a></li><li><a href="#gv-1"><span class="no">1</span>랭킹 인덱스 · Redis</a></li><li><a href="#gv-2"><span class="no">2</span>친구 검색 재측정</a></li><li><a href="#gv-3"><span class="no">3</span>공용 재시도 큐</a></li></ol></li><li class="sp p2"><a href="#maskpass">마패(Mask Pass)</a><ol><li><a href="#mp-infra" class="infra">인프라 · ERD</a></li><li><a href="#mp-1"><span class="no">1</span>SSE 좀비 소켓</a></li><li><a href="#mp-2"><span class="no">2</span>보상 트랜잭션</a></li><li><a href="#mp-3"><span class="no">3</span>비동기 분리</a></li></ol></li></ol></li><li class="sp"><a href="#bio">교육/활동/자격증</a></li></ol></aside>
 <div class="scrim" hidden></div>
 <div class="wrap">
 
@@ -37,7 +37,7 @@
 <nav class="toc" id="toc">
   <div class="sec-title"><h2>개선 사례 요약</h2></div>
   <div class="toc-p"><a class="toc-t" href="#easyselect"><span>프로젝트 1</span>이지셀렉(Easy Select) <em>웨딩 사진 AI 셀렉 서비스</em></a>
-    <ol><li><a href="#es-1"><b>개선 1</b>배포 중 요청 실패 42% → 0건, 앱 서버 2대 무중단 배포</a></li><li><a href="#es-2"><b>개선 2</b>AI 분석 중 셀렉 요청 p95 19.1초 → 51ms</a></li><li><a href="#es-3"><b>개선 3</b>힙을 줄였는데도 Full GC 19.6초, 원인은 JVM 몸집이었다 → 0.45초</a></li><li><a href="#es-4"><b>개선 4</b>Lambda 샤딩의 한계를 계측으로 확인하고 GPU 워커로 전환, 비용 1/24</a></li></ol>
+    <ol><li><a href="#es-4"><b>개선 1</b>Lambda 샤딩의 한계를 계측으로 확인하고 GPU 워커로 전환, 비용 1/24</a></li><li><a href="#es-2"><b>개선 2</b>AI 분석 중 셀렉 요청 p95 19.1초 → 51ms</a></li><li><a href="#es-1"><b>개선 3</b>배포 중 요청 실패 42% → 0건, 앱 서버 2대 무중단 배포</a></li><li><a href="#es-3"><b>개선 4</b>힙을 줄였는데도 Full GC 19.6초, 원인은 JVM 몸집이었다 → 0.45초</a></li></ol>
   </div>
   <div class="toc-p"><a class="toc-t" href="#gravit"><span>프로젝트 2</span>그래빗(Gravit) <em>CS 지식 학습 보조 서비스</em></a>
     <ol><li><a href="#gv-1"><b>개선 1</b>쓰기를 막던 랭킹 인덱스를 걷어 내고 Redis로, 100만 명 p95 984 → 4.0ms</a></li><li><a href="#gv-2"><b>개선 2</b>"이미 최적화한" 친구 검색을 다시 재 10만 명 TPS 5.3배</a></li><li><a href="#gv-3"><b>개선 3</b>이벤트 리스너 실패를 흡수하는 공용 재시도 큐, 팀 전체 리스너로 확장</a></li></ol>
@@ -72,8 +72,175 @@
   <a class="fold fold-link" id="es-erd" href="erd/easyselect/">ERD</a>
 
   <h3 class="cases-h">개선 사례</h3>
-  <article class="case" id="es-1">
+  <article class="case" id="es-4">
     <div class="num"><span class="badge">개선 1</span>이지셀렉(Easy Select)</div>
+    <h3>Lambda 샤딩의 한계를 계측으로 확인하고 GPU 워커로 전환, 비용 1/24</h3>
+    <p class="summary">품질 점수 단계가 Lambda 15분 제한에 걸림 → 샤딩으로 9.7분까지 줄인 뒤 더는 못 줄이는 벽 3개를 확인 → 후보를 같은 갤러리로 비교해 GPU 워커 2대 → 3.9분, 비용 1/24, 꺼지지 않을 때를 대비한 4겹</p>
+    <div class="stats">
+      <div class="stat"><span class="v">9.7분 → 3.9분</span><span class="k">품질 점수 단계 전체 소요 시간</span></div>
+      <div class="stat"><span class="v">$1.53 → $0.063</span><span class="k">같은 갤러리 1회 비용 (1/24)</span></div>
+      <div class="stat"><span class="v">61 → 29</span><span class="k">RDS 연결 피크</span></div>
+    </div>
+
+    <figure class="eli5"><svg viewBox="0 0 1000 372" role="img" aria-label="개선 전에는 Lambda 샤드 32개가 각각 DB 연결을 잡고 150장씩 처리해 9.7분과 1.53달러가 들었고 더 줄일 수 없었다. 개선 후에는 앱 서버가 EC2 g6.xlarge GPU 워커를 켜고 끄며, 디코드 스레드 4개가 전처리를 미리 해 GPU 사용률을 97%까지 올리고, 안전망 4겹으로 꺼짐을 보장해 3.9분과 0.063달러가 되었다"><defs><marker id="e4-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker><marker id="e4-ar-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c6422c"/></marker><marker id="e4-ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f4fd8"/></marker></defs><g color="#2e3036"><path d="M478 190 L522 190" stroke="#15161a" stroke-width="2" fill="none" marker-end="url(#e4-ar)"/><text x="20" y="26" font-size="14" fill="#c6422c" font-weight="600">개선 전 · Lambda 샤딩 32개, 더는 못 줄인다</text><rect x="30" y="120" width="100" height="80" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="80.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">갤러리</text><text x="80.0" y="160" font-size="11" fill="#6b6f78" text-anchor="middle">7,189장</text><text x="80.0" y="176" font-size="11" fill="#6b6f78" text-anchor="middle">장당 1.52초</text><path d="M136 160 L186 90" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="70" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="92" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 1</text><path d="M306 90 L356 90" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><path d="M136 160 L186 140" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="120" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 2</text><path d="M306 140 L356 140" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><path d="M136 160 L186 190" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="170" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="192" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 3</text><path d="M306 190 L356 190" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><path d="M136 160 L186 240" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="220" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="242" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 32</text><path d="M306 240 L356 240" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><text x="245" y="150" font-size="14" fill="#c6422c" text-anchor="middle">…</text><text x="245" y="272" font-size="10.5" fill="#6b6f78" text-anchor="middle">150장씩 · 최대 32개</text><rect x="360" y="120" width="80" height="80" rx="6" fill="#fbe9e5" stroke="#c6422c" stroke-width="2"/><text x="400.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="400.0" y="160" font-size="11" fill="#c6422c" text-anchor="middle">연결 피크</text><text x="400.0" y="176" font-size="11" fill="#c6422c" text-anchor="middle">61 / 79</text><text x="400" y="112" font-size="10" fill="#c6422c" text-anchor="middle">샤드마다 DB 연결</text><text x="30" y="300" font-size="11" fill="#6b6f78">직렬 Lambda: 15분 제한에 걸려 40분 넘어도 미완주(100분+)</text><text x="30" y="318" font-size="11" fill="#c6422c" font-weight="600">샤딩: 9.7분 · $1.53. 가장 느린 샤드가 1.7배 느리고, 연산 총량은 그대로라 비용도 그대로</text><text x="30" y="340" font-size="10.5" fill="#6b6f78">같은 갤러리로 후보 비교: SageMaker T4 9.4분(시간 기준 미달) · L4 5.6분(기동 지연 큼)</text><text x="30" y="356" font-size="10.5" fill="#6b6f78">AMI에서 매번 띄우기는 모델 로드 250초로 탈락 → EC2 g6.xlarge 켜기/끄기</text><text x="540" y="26" font-size="14" fill="#1f4fd8" font-weight="600">개선 후 · GPU 워커 1대를 켜고 끈다</text><rect x="540" y="120" width="110" height="80" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="595.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">앱 서버</text><text x="595.0" y="160" font-size="11" fill="#6b6f78" text-anchor="middle">켜기 · 끄기</text><text x="595.0" y="176" font-size="11" fill="#6b6f78" text-anchor="middle">제어</text><path d="M656 150 L686 150" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><text x="671" y="140" font-size="10.5" fill="#1f4fd8" text-anchor="middle">켬</text><rect x="690" y="60" width="200" height="180" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="2"/><text x="790" y="84" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">EC2 g6.xlarge · GPU 워커</text><rect x="704" y="98" width="172" height="52" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1"/><text x="790" y="118" font-size="11.5" fill="#15161a" font-weight="600" text-anchor="middle">디코드 스레드 4개</text><text x="790" y="134" font-size="10.5" fill="#6b6f78" text-anchor="middle">전처리를 미리 해 둠</text><path d="M790 150 L790 162" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><rect x="704" y="166" width="172" height="60" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1"/><text x="790" y="186" font-size="11" fill="#15161a" font-weight="600" text-anchor="middle">GPU 정규화 + 점수(CLIP · ARNIQA)</text><text x="790" y="204" font-size="11" fill="#1f4fd8" font-weight="600" text-anchor="middle">사용률 51% → 97~98%</text><text x="790" y="218" font-size="9.5" fill="#6b6f78" text-anchor="middle">(절반 놀던 GPU를 채움)</text><path d="M896 150 L926 150" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><rect x="930" y="120" width="50" height="60" rx="6" fill="#fff" stroke="#1f4fd8" stroke-width="1.5"/><text x="955.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="955.0" y="160" font-size="11" fill="#1f4fd8" text-anchor="middle">피크</text><text x="955.0" y="176" font-size="11" fill="#1f4fd8" text-anchor="middle">29</text><path d="M790 240 L790 262" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><text x="804" y="256" font-size="10.5" fill="#1f4fd8">끝나면 스스로 끔</text><text x="540" y="286" font-size="11" fill="#c6422c" font-weight="600">꺼지지 않으면 시간당 $0.99 × 2대 = 월 $1,424 → 안전망 4겹을 서로 다른 곳에</text><rect x="540" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="592" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">워커 자기 정지</text><text x="592" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">워커</text><rect x="652" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="704" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">서버 안전망</text><text x="704" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">앱 서버</text><rect x="764" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="816" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">CloudWatch 알람</text><text x="816" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">AWS</text><rect x="876" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="928" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">systemd failsafe</text><text x="928" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">OS</text><text x="540" y="350" font-size="11" fill="#1f4fd8" font-weight="600">실제 사고 3건마다 겹을 보강 · 결과: 점수 단계 9.7분 · $1.53 → 3.9분 · $0.063 (1/24)</text></g></svg><figcaption><b>잘게 쪼개 병렬로 돌리는 대신, 큰 GPU 하나를 필요할 때만 켜고 반드시 끄게 했다.</b> 왼쪽은 샤드를 늘려도 연산 총량과 DB 연결이 그대로인 구조, 오른쪽은 GPU 한 대를 꽉 채워 쓰고 꺼짐을 네 곳에서 보장하는 구조.</figcaption></figure>
+    <div class="part" data-n="1">문제</div>
+    <ul class="prob">
+      <li>사진마다 미학 점수(CLIP)와 화질 점수(ARNIQA)를 매기는 단계가 장당 1.52초(CLIP 0.68 + ARNIQA 0.80)</li>
+      <li>Lambda 15분 제한에 걸려 822장도 13.9분에 512장까지만, 실제 갤러리 7,189장은 40분이 넘어도 미완주</li>
+    </ul>
+
+    <div class="part" data-n="2">개선 과정</div>
+    <ol class="steps">
+      <li><div><div class="st-h"><span class="tag do">시도</span><b>Lambda 샤딩: 150장씩 최대 32개 동시 실행 → 9.7분</b></div></div></li>
+      <li><div><div class="st-h"><span class="tag find">발견</span><b>샤드를 늘려도 안 되는 벽 3개 (단계별 시간 로그)</b></div>
+        <ul>
+          <li><b>샤드 수가 유일한 손잡이:</b> 장당 1.45초는 vCPU 연산 몫이라 샤드 하나의 속도는 못 올리고, 전체 시간은 샤드를 늘려야만 줄었다</li>
+          <li><b>그런데 DB가 샤드 수를 막음:</b> 샤드마다 DB 연결을 끝까지 잡아 RDS 피크 61/79. DB 최대 연결 수가 곧 샤드 상한이라 32개에서 더 늘릴 수 없었다</li>
+          <li><b>호스트 편차:</b> 같은 코드가 샤드마다 1.7배 느림(중앙값 341초 vs 최장 580초), 가장 느린 샤드가 전체 소요 시간을 정함</li>
+          <li>샤딩은 기다리는 시간만 줄일 뿐 쓴 연산 총량은 그대로라 비용도 그대로</li>
+        </ul></div></li>
+      <li><div><div class="st-h"><span class="tag do">결정</span><b>후보 런타임을 같은 갤러리로 측정해 비교</b></div>
+        
+        <div class="tbl"><table>
+          <tr><th>런타임</th><th>점수 단계</th><th>1회 비용</th><th>판단</th></tr>
+          <tr><td>Lambda 32샤드 (기준)</td><td>9.7분</td><td>$1.53</td><td>—</td></tr>
+          <tr><td>SageMaker g4dn(T4)</td><td>9.4분</td><td>$0.115</td><td>시간 기준 미달</td></tr>
+          <tr><td>SageMaker g6(L4)</td><td>5.6분</td><td>$0.109</td><td>통과, 단 제출부터 컨테이너 기동이 큼</td></tr>
+          <tr><td>RunPod (외부 GPU)</td><td>—</td><td>예상 약 $0.11~0.16 (전송비 포함)</td><td>AWS 밖이라 사진 전송비와 비공개 DB 연결 부담이 들어 측정 전에 제외</td></tr>
+          <tr><td>AMI에서 매번 새로 띄우기</td><td>9.5분</td><td>—</td><td>모델 로드 250초(디스크 지연 로드)로 탈락</td></tr>
+          <tr class="pick"><td>EC2 g6.xlarge 켜기/끄기 (선택)</td><td>3.9분</td><td>약 $0.063</td><td>g6는 정지에 약 350초 → 바로 못 다시 켜서 2대 풀</td></tr>
+        </table></div></div></li>
+      <li><div><div class="st-h"><span class="tag find">발견</span><b>GPU가 절반 놀고 있었다 (사용률 51%)</b></div>
+        <p>GPU가 점수를 계산하는 동안, 다음 사진을 모델 입력으로 바꾸는 CPU 전처리(CLIP용 224px 리사이즈, ARNIQA용 실수 변환)를 메인 스레드가 순서대로 하고 있었다. 그래서 GPU는 전처리가 끝나기를 기다리며 절반을 놀았다.</p>
+        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>전처리를 GPU 계산과 겹치게</b></div>
+        <ul>
+          <li>사진 디코드 · 리사이즈를 별도 디코드 스레드 4개가 미리 해 두고(프리페치), 메인 스레드는 GPU에 넘기기만 함</li>
+          <li>무거운 정규화 계산은 CPU 대신 GPU에서 처리</li>
+          <li>결과: GPU 사용률 51% → <strong>97~98%</strong>, 점수 계산 399 → 241초</li>
+        </ul>
+        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>콜드 기동 75초 → 16초</b></div>
+        <p>기본 딥러닝 AMI가 부팅 때마다 GPU 드라이버 모듈 재빌드(dkms, 56초)와 로그인 안내문 갱신(motd, 30초)을 돌리고 있었다. 워커에 필요 없는 두 서비스를 끄고, 이후 필요한 것만 담은 자체 AMI로 교체했다.</p></div></li>
+      <li><div><div class="st-h"><span class="tag ok">검증</span><b>fp16 전환을 7,189장 전수 대조</b></div>
+        <p>fp16(절반 정밀도)은 빠른 대신 점수 값이 아주 조금 달라질 수 있다. 셀렉에서 중요한 건 점수의 순서라, 7,189장을 기존 방식과 fp16으로 각각 채점해 순위가 얼마나 같은지(순위 상관, 1이면 순서가 완전히 같음)를 비교했다. 1.0000 · 0.9999로 순서가 같아 모델 버전을 바꾸지 않았다.</p></div></li>
+      <li><div><div class="st-h"><span class="tag fail">버림</span><b>화질 점수 모델(ARNIQA)의 입력 해상도 낮추기</b></div>
+        <p>입력 사진을 줄이면 빨라지지만, 운영 입력은 이미 1024px로 압축된 미리보기였다. 여기서 더 줄이면 지금 점수와의 순위 상관이 <strong>0.638(896px) · 0.536(768px)</strong>으로 떨어져 화질 순서가 뒤바뀐다. 1024px을 유지했다.</p></div></li>
+      <li><div><div class="st-h"><span class="tag do">결정</span><b>꺼지지 않을 때를 대비한 4겹</b></div>
+        <p>g6.xlarge는 시간당 약 $0.99. 정지가 모두 실패해 2대가 계속 켜지면 월 $1,424, 꺼져 있으면 월 $7. 끄는 장치를 서로 다른 곳에 두었다.</p>
+        <div class="tbl"><table>
+          <tr><th>겹</th><th>조건</th><th>위치</th></tr>
+          <tr><td>① 워커 자기 정지</td><td>처리할 사진 없음 30초</td><td>AI 워커</td></tr>
+          <tr><td>② 서버 안전망</td><td>남은 일 0 · 기동 5분 지남 · 2분 진행 없음</td><td>앱 서버</td></tr>
+          <tr><td>③ CloudWatch 알람</td><td>CPU 5% 미만 30분, 인스턴스 ID로만(태그 기준이면 평소 CPU가 낮은 앱 서버까지 꺼짐)</td><td>인프라</td></tr>
+          <tr><td>④ systemd failsafe</td><td>10분 안에 3번 기동 실패하면 자기 인스턴스 정지</td><td>인스턴스</td></tr>
+        </table></div></div></li>
+      <li><div><div class="st-h"><span class="tag fail">사고</span><b>실제 사고 3건, 사고마다 겹을 보강</b></div>
+        <ul>
+          <li><b>18분 헛돎:</b> 인자 변환 오류로 0장을 처리하며 18분 돌아 사람이 껐다 → 연속 5번 실패하면 워커가 스스로 멈추게 함</li>
+          <li><b>자기 정지 실패:</b> 컨테이너에 리전 설정이 없어 워커의 정지 요청이 실패했고, 서버 안전망이 대신 껐다 → 리전을 인스턴스 정보에서 읽게 고쳐 30초 만에 스스로 꺼지는 것을 확인</li>
+          <li><b>디스크 부족:</b> 옛 워커 이미지가 쌓여 디스크 30GB 중 20.7GB를 차지해 새 이미지를 못 받았다. failsafe가 그 인스턴스를 끄고 두 번째 워커가 처리해 데이터 손실은 0 → 기동 때 옛 이미지를 지우게 고침</li>
+        </ul></div></li>
+    </ol>
+
+    <div class="part" data-n="3">결과</div>
+    <div class="chart bars">
+      <p class="msg">같은 갤러리 7,189장을 끝까지 처리하는 시간과 원가</p>
+      <div class="row"><div class="lab"><b>직렬 Lambda</b><span>15분 제한에 걸려 미완주</span></div><div class="track"><div class="bar open" style="width:70%"></div><span class="val">100분+</span></div></div>
+      <div class="row"><div class="lab"><b>Lambda 샤딩 32</b><span>vCPU · 연결 · 호스트 편차의 벽</span></div><div class="track"><div class="bar m" style="width:12.8%"></div><span class="val">18.3분<em>$1.94</em></span></div></div>
+      <div class="row"><div class="lab"><b>GPU 워커 2대</b><span>50장 배치 · SKIP LOCKED</span></div><div class="track"><div class="bar a" style="width:4.5%"></div><span class="val">6분 26초<em>$0.45</em></span></div></div>
+      <p class="note">업로드 시작부터 컨셉 폴더 완성까지(전체 파이프라인) · 원가는 S3 요청 포함 · 막대는 선형(100분 = 70% 폭)</p>
+    </div>
+    <div class="tbl"><table class="res">
+      <tr><th>항목</th><th>결과</th></tr>
+      <tr><td>점수 단계 (벤치)</td><td>9.7분 · $1.53 → 3.9분 · $0.063, 장당 1.45초 → 0.021초(69배)</td></tr>
+      <tr><td>RDS 연결 피크</td><td>61 → 29</td></tr>
+      <tr><td>GPU 사용률 · 콜드 기동</td><td>51% → 97~98% · 75초 → 16초</td></tr>
+      <tr><td>전체 파이프라인 (7,189장)</td><td>100분+ → 6분 26초, 원가 $1.94 → $0.45</td></tr>
+    </table></div>
+  </article>
+
+  <article class="case" id="es-2">
+    <div class="num"><span class="badge">개선 2</span>이지셀렉(Easy Select)</div>
+    <h3>AI 분석 중 셀렉 요청 p95 19.1초 → 51ms</h3>
+    <p class="summary">업로드가 AI 분석을 돌리는 동안 다른 사용자 요청이 19초 → 연결 풀을 늘렸다가 더 나빠진 뒤, 벽을 하나씩 계측해 걷어 냄 → p95 51ms, 오류 0%</p>
+    <div class="stats">
+      <div class="stat"><span class="v">19,106 → 51ms</span><span class="k">셀렉 요청 p95 (중간 6,056ms)</span></div>
+      <div class="stat"><span class="v">−94%</span><span class="k">DB 쿼리 처리 시간 합계</span></div>
+      <div class="stat"><span class="v">1,222초 → 24초</span><span class="k">실패 작업 재처리, 잃은 작업 0</span></div>
+    </div>
+
+    <figure class="eli5"><svg viewBox="0 0 1000 400" role="img" aria-label="개선 전에는 임베더 Lambda 72개가 사진마다 직접 DB에 쓰고 작업공간 한 행에 쓰기가 몰려 잠금 경합이 생겼으며 앱 서버는 presigned URL 서명에 CPU를 썼다. 개선 후에는 SQS 결과 큐와 writer Lambda 2개가 10건씩 묶어 쓰고, 한 행 쓰기를 모아 한 번에 쓰며, URL 서명은 10분 캐시한다"><defs><marker id="e2-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker><marker id="e2-ar-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c6422c"/></marker><marker id="e2-ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f4fd8"/></marker></defs><g color="#2e3036"><path d="M478 200 L522 200" stroke="#15161a" stroke-width="2" fill="none" marker-end="url(#e2-ar)"/><text x="20" y="26" font-size="14" fill="#c6422c" font-weight="600">개선 전 · Lambda 72개가 각자 DB에 쓴다</text><rect x="46" y="86" width="120" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="38" y="78" width="120" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="30" y="70" width="120" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="90" y="100" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">임베더 Lambda</text><text x="90" y="118" font-size="11" fill="#6b6f78" text-anchor="middle">× 72</text><path d="M166 84 L290 84" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M166 100 L290 100" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M166 116 L290 116" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M166 132 L290 132" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><text x="228" y="74" font-size="11" fill="#c6422c" font-weight="600" text-anchor="middle">사진마다 직접 INSERT</text><rect x="296" y="66" width="140" height="84" rx="6" fill="#fbe9e5" stroke="#c6422c" stroke-width="2"/><text x="366.0" y="88" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="366.0" y="106" font-size="11" fill="#c6422c" text-anchor="middle">DB 시간의 56.8%가</text><text x="366.0" y="122" font-size="11" fill="#c6422c" text-anchor="middle">임베더의 쓰기</text><text x="366.0" y="138" font-size="11" fill="#c6422c" text-anchor="middle">CPU 88%</text><text x="20" y="196" font-size="11.5" fill="#6b6f78">작업공간 테이블</text><rect x="30" y="204" width="406" height="22" rx="3" fill="#fff" stroke="#dedfe3" stroke-width="1"/><rect x="30" y="204" width="406" height="22" rx="3" fill="#fbe9e5" stroke="#c6422c" stroke-width="1.5"/><text x="233" y="219" font-size="11" fill="#c6422c" font-weight="600" text-anchor="middle">한 행 (잠금)</text><path d="M80 258 L80 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M140 258 L140 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M200 258 L200 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M260 258 L260 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M320 258 L320 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M380 258 L380 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><text x="233" y="276" font-size="11" fill="#c6422c" text-anchor="middle">쓰기가 한 행에 몰림 → 잠금 경합 · 커넥션 풀 10개에 최대 194개 대기</text><text x="233" y="292" font-size="10.5" fill="#6b6f78" text-anchor="middle">풀을 나누고 늘려 봤지만 30,001ms · 오류 21%로 더 나빠짐</text><rect x="30" y="312" width="170" height="66" rx="6" fill="#fbe9e5" stroke="#c6422c" stroke-width="1.5"/><text x="115.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">앱 서버</text><text x="115.0" y="352" font-size="11" fill="#6b6f78" text-anchor="middle">CPU 63.7%가 presigned</text><text x="115.0" y="368" font-size="11" fill="#6b6f78" text-anchor="middle">URL 서명 계산</text><path d="M206 345 L290 345" stroke="#c6422c" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-b)"/><text x="248" y="336" font-size="10.5" fill="#c6422c" text-anchor="middle">사진 조회</text><rect x="296" y="312" width="140" height="66" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.5"/><text x="366.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">부부 200명</text><text x="366.0" y="352" font-size="11" fill="#c6422c" text-anchor="middle">셀렉 요청 p95</text><text x="366.0" y="368" font-size="11" fill="#c6422c" text-anchor="middle">19.1초</text><text x="540" y="26" font-size="14" fill="#1f4fd8" font-weight="600">개선 후 · 큐에 모아 묶어 쓴다</text><rect x="556" y="86" width="110" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="548" y="78" width="110" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="540" y="70" width="110" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="595" y="100" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">임베더 Lambda</text><text x="595" y="118" font-size="11" fill="#6b6f78" text-anchor="middle">× 72</text><path d="M666 105 L696 105" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><rect x="700" y="78" width="86" height="54" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="2"/><text x="743.0" y="100" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">SQS</text><text x="743.0" y="118" font-size="11" fill="#6b6f78" text-anchor="middle">결과 큐</text><path d="M786 105 L816 105" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><rect x="820" y="66" width="80" height="78" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="2"/><text x="860.0" y="88" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">writer</text><text x="860.0" y="106" font-size="11" fill="#6b6f78" text-anchor="middle">Lambda × 2</text><text x="860.0" y="122" font-size="11" fill="#6b6f78" text-anchor="middle">10건씩</text><text x="860.0" y="138" font-size="11" fill="#6b6f78" text-anchor="middle">묶어 씀</text><path d="M900 105 L930 105" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><rect x="934" y="66" width="46" height="78" rx="6" fill="#fff" stroke="#1f4fd8" stroke-width="1.5"/><text x="957.0" y="88" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="957.0" y="106" font-size="11" fill="#1f4fd8" text-anchor="middle">CPU</text><text x="957.0" y="122" font-size="11" fill="#1f4fd8" text-anchor="middle">19~</text><text x="957.0" y="138" font-size="11" fill="#1f4fd8" text-anchor="middle">41%</text><path d="M743 132 L743 150" stroke="#9a9ea8" stroke-width="1.2" fill="none" stroke-dasharray="3 3"/><rect x="700" y="152" width="86" height="30" rx="6" fill="#fff" stroke="#9a9ea8" stroke-width="1.2" stroke-dasharray="4 3"/><text x="743.0" y="174" font-size="12.5" fill="#6b6f78" font-weight="600" text-anchor="middle">DLQ</text><text x="795" y="171" font-size="10.5" fill="#6b6f78">끝내 실패한 호출 → 서버가 바로 재전송</text><text x="795" y="186" font-size="10.5" fill="#6b6f78">호출 2%를 일부러 죽여 경로 검증</text><text x="540" y="206" font-size="11.5" fill="#6b6f78">작업공간 테이블</text><rect x="550" y="214" width="430" height="22" rx="3" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="1.5"/><text x="765" y="229" font-size="11" fill="#1f4fd8" font-weight="600" text-anchor="middle">한 행 · 모아서 한 번에 씀</text><path d="M765 266 L765 240" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><text x="765" y="282" font-size="11" fill="#1f4fd8" text-anchor="middle">쓰기를 모아 한 번에 → 잠금 경합 해소</text><rect x="550" y="312" width="190" height="66" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="1.5"/><text x="645.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">앱 서버</text><text x="645.0" y="352" font-size="11" fill="#6b6f78" text-anchor="middle">presigned URL 10분 재사용</text><text x="645.0" y="368" font-size="11" fill="#6b6f78" text-anchor="middle">캐시 → 서명 계산 제거</text><path d="M746 345 L820 345" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><text x="783" y="336" font-size="10.5" fill="#1f4fd8" text-anchor="middle">사진 조회</text><rect x="826" y="312" width="154" height="66" rx="6" fill="#fff" stroke="#1f4fd8" stroke-width="1.5"/><text x="903.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">부부 400명</text><text x="903.0" y="352" font-size="11" fill="#1f4fd8" text-anchor="middle">셀렉 요청 p95</text><text x="903.0" y="368" font-size="11" fill="#1f4fd8" text-anchor="middle">67ms · 오류 0%</text></g></svg><figcaption><b>DB를 때리는 손을 72개에서 2개로 줄이고, 한 행에 몰리던 쓰기를 모았다.</b> 왼쪽은 분석이 도는 동안 같은 DB를 쓰는 부부의 요청이 19초까지 밀리던 구조, 오른쪽은 큐로 모아 묶어 쓰는 구조. 연결 수가 아니라 잠금과 쓰기 횟수가 병목이었다.</figcaption></figure>
+    <div class="part" data-n="1">문제</div>
+    <ul class="prob">
+      <li>갤러리 5개 동시 업로드(총 약 3.6만 장)로 AI 분석이 도는 동안, 사진을 고르는 부부 200명의 요청 <strong>p95가 19.1초</strong></li>
+      <li>업로드 속도만 재 왔을 뿐, 같은 DB가 다른 모든 조회 · 쓰기를 함께 받는 상황은 재 본 적이 없었다</li>
+      <li>목표: p95 500ms 이하, 오류 1% 미만, 장애가 나도 60초 안에 재처리하고 잃는 작업 0</li>
+    </ul>
+
+    <div class="part" data-n="2">개선 과정</div>
+    <ol class="steps">
+      <li><div><div class="st-h"><span class="tag">측정</span><b>부하 대본부터 세 번 고침</b></div>
+        <ul>
+          <li>부부 화면이 실제로 부르지 않는 API를 웹 코드와 대조해 뺌</li>
+          <li>운영 중인 실사용 부부 한 쌍의 일주일 로그(요청 11,664건)로 비율을 맞춤: 읽기 87%. 원래 대본은 사진 상세를 22배, 담기 · 빼기를 30배 부풀렸고, 실제로 가장 많은 목록 조회는 빠져 있었다</li>
+          <li>대본이 바뀔 때마다 '개선 전'을 다시 쟀고, k6가 빨라지면 더 많이 보내는 점을 감안해 전체 요청 수도 함께 기록(16,737 → 48,559건)</li>
+        </ul></div></li>
+      <li><div><div class="st-h"><span class="tag find">발견</span><b>앱의 DB 커넥션 풀(10개)에 모든 요청이 줄을 섬</b></div>
+        <p>앱 서버(Spring Boot)가 DB에 붙을 때 쓰는 커넥션 풀(HikariCP) 10개가 모두 사용 중이었고, 연결을 기다리는 요청이 최대 194개였다.</p>
+        <ul>
+          <li>DB에서 1ms면 끝나는 가벼운 조회까지 p95가 9~18초로, 무거운 요청과 거의 같았다. <strong>쿼리가 느린 게 아니라 연결을 얻으려고 같은 줄에 서 있던 것</strong></li>
+          <li>AI 분석을 진행시키는 스케줄러도 같은 줄 뒤에 서서, 임베딩 호출이 분당 128~143건에서 14~46건으로 떨어졌다. 그 결과 업로드부터 AI 폴더 완성까지가 16분 28초로 밀렸다(가드레일 10분 47초)</li>
+        </ul>
+        <p>풀이 병목처럼 보였다.</p></div></li>
+      <li><div><div class="st-h"><span class="tag fail">실패</span><b>풀을 나누고, 늘렸더니 더 나빠짐</b></div>
+        <p>분석용 풀을 따로 두자 12,454ms, 풀을 10 → 20으로 늘리자 <strong>30,001ms · 오류 21%</strong>. 모든 쓰기가 작업공간 한 행을 잠그고 있었다. 병목은 연결 수가 아니라 행 잠금 경합이었고, <strong>풀을 늘리면 줄이 DB 안으로 옮겨 갈 뿐</strong>이었다.</p>
+        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>연결을 늘리는 대신, 한 행에 몰리는 앱 쓰기를 모은다</b></div>
+        <p>앱 서버가 요청마다 남기던 갤러리 활동 기록이 전부 작업공간 한 행을 고치고 있었다. 이 기록을 모아서 한 번에 쓰게 바꿔 행 잠금 경합을 줄였다.</p></div></li>
+      <li><div><div class="st-h"><span class="tag find">발견</span><b>다음 벽: AI 임베더 Lambda 72개가 사진마다 직접 DB에 씀</b></div>
+        <p>행 잠금을 풀자 다른 쓰기가 드러났다. pg_stat_statements로 보니 임베더 Lambda 72개가 사진마다 분석 결과 INSERT와 미리보기 UPDATE를 각자 날리고 있었고, 이것이 <strong>DB 시간의 56.8%</strong>였다. 경합이 아니라 쓰는 주체와 횟수 자체가 많은 문제.</p>
+        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>SQS 결과 큐 + writer Lambda</b></div>
+        <p>임베더 Lambda는 결과를 DB에 직접 쓰지 않고 SQS 결과 큐에 넣는다. 별도의 <strong>writer Lambda</strong>(동시 최대 2개)가 큐에서 10건씩 묶어 가져가 DB에 쓴다. DB에 붙는 쪽이 임베더 <strong>72개에서 writer 2개</strong>로 줄었다. p95 <strong>19,106 → 6,056ms</strong>, DB 쿼리 시간 합계 <strong>−94%</strong>, RDS CPU <strong>88% → 19~41%</strong>.</p></div></li>
+      <li><div><div class="st-h"><span class="tag find">발견</span><b>JFR: 앱 CPU의 63.7%가 사진 조회용 presigned URL 생성</b></div>
+        <p>S3에 있는 사진을 브라우저가 직접 받으려면 사진마다 기한이 있는 presigned URL(서명이 붙은 임시 주소)이 필요하다. 사진 목록 한 페이지(200장)를 줄 때마다 같은 사진의 presigned URL을 매번 새로 만들고 있었고, JFR로 보니 이 서명 계산이 앱 CPU 표본의 <strong>63.7%</strong>였다.</p>
+        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>presigned URL 10분 재사용 캐시</b></div>
+        <p>한 번 만든 URL을 10분 동안 다시 쓴다. URL 1,542자 중 사진마다 다른 건 서명 시각과 서명 값뿐이라 공통 부분은 공유하고 둘만 저장했다(항목 약 250B, 캐시 적중 0.44µs vs 새로 생성 102.7µs). p95 <strong>6,056 → 51ms</strong>.</p></div></li>
+      <li><div><div class="st-h"><span class="tag do">결정</span><b>Lambda가 끝내 실패하면 DLQ로 받아 바로 재처리</b></div>
+        <p>분석 Lambda는 재시도 후에도 실패하면 그 호출을 SQS 실패 큐(DLQ)에 남기도록 하고, 서버가 이 큐를 읽어 실패한 작업을 재전송 대기 시간까지 기다리지 않고 바로 다시 보내게 했다.</p>
+        <div class="st-h" style="margin-top:8px"><span class="tag ok">검증</span><b>장애를 일부러 넣어 재처리 경로 확인</b></div>
+        <p>실제 Lambda 오류율이 높아서가 아니라, 이 경로가 동작하는지 보려고 Lambda 호출의 2%가 받자마자 죽도록 장애를 주입했다. 분류 단계 재처리 <strong>1,222초 → 24초</strong>, 잃은 작업 <strong>0</strong>, DLQ에 쌓인 실패 22건을 모두 재처리.</p></div></li>
+      <li><div><div class="st-h"><span class="tag find">발견</span><b>캐시로도 남는 문제: presigned URL은 계속 바뀐다</b></div>
+        <p>서버가 2대가 되면서 두 서버가 캐시를 함께 쓰도록 Redis(Valkey) 공유 캐시까지 붙였다. 그래도 문제가 남았다.</p>
+        <ul>
+          <li>presigned URL은 보안상 오래 둘 수 없어 10분마다 바뀌고, 웹은 12분마다 목록을 다시 받아 주소를 모두 갈아 끼웠다. 브라우저는 주소가 바뀐 사진을 새 사진으로 보고 <strong>이미 본 사진도 다시 받았다</strong>(한 페이지에 1시간 머무는 측정에서 112MB, 주소가 고정이면 13MB)</li>
+          <li>서명이 바뀔 때마다 캐시도 다시 채워야 했다</li>
+        </ul>
+        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>미리보기는 CloudFront 고정 주소 + 갤러리 단위 서명 쿠키</b></div>
+        <p>미리보기 이미지를 CDN의 바뀌지 않는 주소로 주고, 볼 권한은 갤러리 단위 서명 쿠키로 확인한다. 주소가 고정이라 브라우저 캐시가 그대로 살고, 서명 URL 캐시와 Valkey는 필요 없어져 걷어냈다.</p></div></li>
+    </ol>
+
+    <div class="part" data-n="3">결과</div>
+    <div class="chart bars">
+      <p class="msg">원인 두 개를 차례로 걷어내자 p95가 19.1초에서 51ms로</p>
+      <div class="row"><div class="lab"><b>기준선</b><span>Lambda 72개가 각자 DB에 씀</span></div><div class="track"><div class="bar b" style="width:70%"></div><span class="val">19,106ms</span></div></div>
+      <div class="row"><div class="lab"><b>① SQS 결과 큐</b><span>writer Lambda 2개가 묶어 씀</span></div><div class="track"><div class="bar m" style="width:22.2%"></div><span class="val">6,056ms<em>−68%</em></span></div></div>
+      <div class="row"><div class="lab"><b>② presigned URL 캐시</b><span>URL 매번 생성 제거</span></div><div class="track"><div class="bar a" style="width:0.2%"></div><span class="val">51ms<em>기준선의 1/375</em></span></div></div>
+      <p class="note">같은 대본 · 부부 200명 · 갤러리 5개 동시 업로드 중 · 막대는 선형</p>
+    </div>
+    <div class="tbl"><table class="res">
+      <tr><th>항목</th><th>결과</th></tr>
+      <tr><td>셀렉 요청 p95 (200명)</td><td>19,106 → 6,056 → 51ms, 오류 0% · 400명도 67ms</td></tr>
+      <tr><td>DB</td><td>쿼리 처리 시간 합계 −94%, RDS CPU 88% → 19~41%</td></tr>
+      <tr><td>장애 주입 재처리</td><td>1,222초 → 24초, 잃은 작업 0, 실패 기록 22건 = 재처리 22건</td></tr>
+      <tr><td>CDN 전환</td><td>이미 본 사진 다시 받기 499장 → 0. 응답 속도는 presigned URL 캐시 때와 비슷한 수준을 유지하면서, Valkey를 빼 월 $14 절감</td></tr>
+    </table></div>
+
+    <div class="part" data-n="4">한계</div>
+    <ul class="prob">
+      <li>CloudFront는 사용량 과금이다. 인터넷으로 나가는 전송량(GB)과 HTTPS 요청 수 기준으로 과금되고, 매달 전송 1TB · 요청 1,000만 건까지는 무료다. S3에서 CloudFront로 가져오는 전송은 과금되지 않는다</li>
+    </ul>
+  </article>
+
+  <article class="case" id="es-1">
+    <div class="num"><span class="badge">개선 3</span>이지셀렉(Easy Select)</div>
     <h3>배포 중 요청 실패 42% → 0건, 앱 서버 2대 무중단 배포</h3>
     <p class="summary">배포마다 43초 끊김 → ASG 2대(on-demand 1 + spot 1)로 가며 만난 함정 셋을 측정으로 넘김 → 배포 중 실패 0 / 36,293건</p>
     <div class="stats">
@@ -229,89 +396,8 @@
     </table></div>
   </article>
 
-  <article class="case" id="es-2">
-    <div class="num"><span class="badge">개선 2</span>이지셀렉(Easy Select)</div>
-    <h3>AI 분석 중 셀렉 요청 p95 19.1초 → 51ms</h3>
-    <p class="summary">업로드가 AI 분석을 돌리는 동안 다른 사용자 요청이 19초 → 연결 풀을 늘렸다가 더 나빠진 뒤, 벽을 하나씩 계측해 걷어 냄 → p95 51ms, 오류 0%</p>
-    <div class="stats">
-      <div class="stat"><span class="v">19,106 → 51ms</span><span class="k">셀렉 요청 p95 (중간 6,056ms)</span></div>
-      <div class="stat"><span class="v">−94%</span><span class="k">DB 쿼리 처리 시간 합계</span></div>
-      <div class="stat"><span class="v">1,222초 → 24초</span><span class="k">실패 작업 재처리, 잃은 작업 0</span></div>
-    </div>
-
-    <figure class="eli5"><svg viewBox="0 0 1000 400" role="img" aria-label="개선 전에는 임베더 Lambda 72개가 사진마다 직접 DB에 쓰고 작업공간 한 행에 쓰기가 몰려 잠금 경합이 생겼으며 앱 서버는 presigned URL 서명에 CPU를 썼다. 개선 후에는 SQS 결과 큐와 writer Lambda 2개가 10건씩 묶어 쓰고, 한 행 쓰기를 모아 한 번에 쓰며, URL 서명은 10분 캐시한다"><defs><marker id="e2-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker><marker id="e2-ar-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c6422c"/></marker><marker id="e2-ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f4fd8"/></marker></defs><g color="#2e3036"><path d="M478 200 L522 200" stroke="#15161a" stroke-width="2" fill="none" marker-end="url(#e2-ar)"/><text x="20" y="26" font-size="14" fill="#c6422c" font-weight="600">개선 전 · Lambda 72개가 각자 DB에 쓴다</text><rect x="46" y="86" width="120" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="38" y="78" width="120" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="30" y="70" width="120" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="90" y="100" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">임베더 Lambda</text><text x="90" y="118" font-size="11" fill="#6b6f78" text-anchor="middle">× 72</text><path d="M166 84 L290 84" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M166 100 L290 100" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M166 116 L290 116" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M166 132 L290 132" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><text x="228" y="74" font-size="11" fill="#c6422c" font-weight="600" text-anchor="middle">사진마다 직접 INSERT</text><rect x="296" y="66" width="140" height="84" rx="6" fill="#fbe9e5" stroke="#c6422c" stroke-width="2"/><text x="366.0" y="88" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="366.0" y="106" font-size="11" fill="#c6422c" text-anchor="middle">DB 시간의 56.8%가</text><text x="366.0" y="122" font-size="11" fill="#c6422c" text-anchor="middle">임베더의 쓰기</text><text x="366.0" y="138" font-size="11" fill="#c6422c" text-anchor="middle">CPU 88%</text><text x="20" y="196" font-size="11.5" fill="#6b6f78">작업공간 테이블</text><rect x="30" y="204" width="406" height="22" rx="3" fill="#fff" stroke="#dedfe3" stroke-width="1"/><rect x="30" y="204" width="406" height="22" rx="3" fill="#fbe9e5" stroke="#c6422c" stroke-width="1.5"/><text x="233" y="219" font-size="11" fill="#c6422c" font-weight="600" text-anchor="middle">한 행 (잠금)</text><path d="M80 258 L80 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M140 258 L140 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M200 258 L200 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M260 258 L260 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M320 258 L320 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><path d="M380 258 L380 230" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e2-ar-b)"/><text x="233" y="276" font-size="11" fill="#c6422c" text-anchor="middle">쓰기가 한 행에 몰림 → 잠금 경합 · 커넥션 풀 10개에 최대 194개 대기</text><text x="233" y="292" font-size="10.5" fill="#6b6f78" text-anchor="middle">풀을 나누고 늘려 봤지만 30,001ms · 오류 21%로 더 나빠짐</text><rect x="30" y="312" width="170" height="66" rx="6" fill="#fbe9e5" stroke="#c6422c" stroke-width="1.5"/><text x="115.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">앱 서버</text><text x="115.0" y="352" font-size="11" fill="#6b6f78" text-anchor="middle">CPU 63.7%가 presigned</text><text x="115.0" y="368" font-size="11" fill="#6b6f78" text-anchor="middle">URL 서명 계산</text><path d="M206 345 L290 345" stroke="#c6422c" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-b)"/><text x="248" y="336" font-size="10.5" fill="#c6422c" text-anchor="middle">사진 조회</text><rect x="296" y="312" width="140" height="66" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.5"/><text x="366.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">부부 200명</text><text x="366.0" y="352" font-size="11" fill="#c6422c" text-anchor="middle">셀렉 요청 p95</text><text x="366.0" y="368" font-size="11" fill="#c6422c" text-anchor="middle">19.1초</text><text x="540" y="26" font-size="14" fill="#1f4fd8" font-weight="600">개선 후 · 큐에 모아 묶어 쓴다</text><rect x="556" y="86" width="110" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="548" y="78" width="110" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><rect x="540" y="70" width="110" height="70" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="595" y="100" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">임베더 Lambda</text><text x="595" y="118" font-size="11" fill="#6b6f78" text-anchor="middle">× 72</text><path d="M666 105 L696 105" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><rect x="700" y="78" width="86" height="54" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="2"/><text x="743.0" y="100" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">SQS</text><text x="743.0" y="118" font-size="11" fill="#6b6f78" text-anchor="middle">결과 큐</text><path d="M786 105 L816 105" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><rect x="820" y="66" width="80" height="78" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="2"/><text x="860.0" y="88" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">writer</text><text x="860.0" y="106" font-size="11" fill="#6b6f78" text-anchor="middle">Lambda × 2</text><text x="860.0" y="122" font-size="11" fill="#6b6f78" text-anchor="middle">10건씩</text><text x="860.0" y="138" font-size="11" fill="#6b6f78" text-anchor="middle">묶어 씀</text><path d="M900 105 L930 105" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><rect x="934" y="66" width="46" height="78" rx="6" fill="#fff" stroke="#1f4fd8" stroke-width="1.5"/><text x="957.0" y="88" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="957.0" y="106" font-size="11" fill="#1f4fd8" text-anchor="middle">CPU</text><text x="957.0" y="122" font-size="11" fill="#1f4fd8" text-anchor="middle">19~</text><text x="957.0" y="138" font-size="11" fill="#1f4fd8" text-anchor="middle">41%</text><path d="M743 132 L743 150" stroke="#9a9ea8" stroke-width="1.2" fill="none" stroke-dasharray="3 3"/><rect x="700" y="152" width="86" height="30" rx="6" fill="#fff" stroke="#9a9ea8" stroke-width="1.2" stroke-dasharray="4 3"/><text x="743.0" y="174" font-size="12.5" fill="#6b6f78" font-weight="600" text-anchor="middle">DLQ</text><text x="795" y="171" font-size="10.5" fill="#6b6f78">끝내 실패한 호출 → 서버가 바로 재전송</text><text x="795" y="186" font-size="10.5" fill="#6b6f78">호출 2%를 일부러 죽여 경로 검증</text><text x="540" y="206" font-size="11.5" fill="#6b6f78">작업공간 테이블</text><rect x="550" y="214" width="430" height="22" rx="3" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="1.5"/><text x="765" y="229" font-size="11" fill="#1f4fd8" font-weight="600" text-anchor="middle">한 행 · 모아서 한 번에 씀</text><path d="M765 266 L765 240" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><text x="765" y="282" font-size="11" fill="#1f4fd8" text-anchor="middle">쓰기를 모아 한 번에 → 잠금 경합 해소</text><rect x="550" y="312" width="190" height="66" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="1.5"/><text x="645.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">앱 서버</text><text x="645.0" y="352" font-size="11" fill="#6b6f78" text-anchor="middle">presigned URL 10분 재사용</text><text x="645.0" y="368" font-size="11" fill="#6b6f78" text-anchor="middle">캐시 → 서명 계산 제거</text><path d="M746 345 L820 345" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e2-ar-a)"/><text x="783" y="336" font-size="10.5" fill="#1f4fd8" text-anchor="middle">사진 조회</text><rect x="826" y="312" width="154" height="66" rx="6" fill="#fff" stroke="#1f4fd8" stroke-width="1.5"/><text x="903.0" y="334" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">부부 400명</text><text x="903.0" y="352" font-size="11" fill="#1f4fd8" text-anchor="middle">셀렉 요청 p95</text><text x="903.0" y="368" font-size="11" fill="#1f4fd8" text-anchor="middle">67ms · 오류 0%</text></g></svg><figcaption><b>DB를 때리는 손을 72개에서 2개로 줄이고, 한 행에 몰리던 쓰기를 모았다.</b> 왼쪽은 분석이 도는 동안 같은 DB를 쓰는 부부의 요청이 19초까지 밀리던 구조, 오른쪽은 큐로 모아 묶어 쓰는 구조. 연결 수가 아니라 잠금과 쓰기 횟수가 병목이었다.</figcaption></figure>
-    <div class="part" data-n="1">문제</div>
-    <ul class="prob">
-      <li>갤러리 5개 동시 업로드(총 약 3.6만 장)로 AI 분석이 도는 동안, 사진을 고르는 부부 200명의 요청 <strong>p95가 19.1초</strong></li>
-      <li>업로드 속도만 재 왔을 뿐, 같은 DB가 다른 모든 조회 · 쓰기를 함께 받는 상황은 재 본 적이 없었다</li>
-      <li>목표: p95 500ms 이하, 오류 1% 미만, 장애가 나도 60초 안에 재처리하고 잃는 작업 0</li>
-    </ul>
-
-    <div class="part" data-n="2">개선 과정</div>
-    <ol class="steps">
-      <li><div><div class="st-h"><span class="tag">측정</span><b>부하 대본부터 세 번 고침</b></div>
-        <ul>
-          <li>부부 화면이 실제로 부르지 않는 API를 웹 코드와 대조해 뺌</li>
-          <li>운영 중인 실사용 부부 한 쌍의 일주일 로그(요청 11,664건)로 비율을 맞춤: 읽기 87%. 원래 대본은 사진 상세를 22배, 담기 · 빼기를 30배 부풀렸고, 실제로 가장 많은 목록 조회는 빠져 있었다</li>
-          <li>대본이 바뀔 때마다 '개선 전'을 다시 쟀고, k6가 빨라지면 더 많이 보내는 점을 감안해 전체 요청 수도 함께 기록(16,737 → 48,559건)</li>
-        </ul></div></li>
-      <li><div><div class="st-h"><span class="tag find">발견</span><b>앱의 DB 커넥션 풀(10개)에 모든 요청이 줄을 섬</b></div>
-        <p>앱 서버(Spring Boot)가 DB에 붙을 때 쓰는 커넥션 풀(HikariCP) 10개가 모두 사용 중이었고, 연결을 기다리는 요청이 최대 194개였다.</p>
-        <ul>
-          <li>DB에서 1ms면 끝나는 가벼운 조회까지 p95가 9~18초로, 무거운 요청과 거의 같았다. <strong>쿼리가 느린 게 아니라 연결을 얻으려고 같은 줄에 서 있던 것</strong></li>
-          <li>AI 분석을 진행시키는 스케줄러도 같은 줄 뒤에 서서, 임베딩 호출이 분당 128~143건에서 14~46건으로 떨어졌다. 그 결과 업로드부터 AI 폴더 완성까지가 16분 28초로 밀렸다(가드레일 10분 47초)</li>
-        </ul>
-        <p>풀이 병목처럼 보였다.</p></div></li>
-      <li><div><div class="st-h"><span class="tag fail">실패</span><b>풀을 나누고, 늘렸더니 더 나빠짐</b></div>
-        <p>분석용 풀을 따로 두자 12,454ms, 풀을 10 → 20으로 늘리자 <strong>30,001ms · 오류 21%</strong>. 모든 쓰기가 작업공간 한 행을 잠그고 있었다. 병목은 연결 수가 아니라 행 잠금 경합이었고, <strong>풀을 늘리면 줄이 DB 안으로 옮겨 갈 뿐</strong>이었다.</p>
-        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>연결을 늘리는 대신, 한 행에 몰리는 앱 쓰기를 모은다</b></div>
-        <p>앱 서버가 요청마다 남기던 갤러리 활동 기록이 전부 작업공간 한 행을 고치고 있었다. 이 기록을 모아서 한 번에 쓰게 바꿔 행 잠금 경합을 줄였다.</p></div></li>
-      <li><div><div class="st-h"><span class="tag find">발견</span><b>다음 벽: AI 임베더 Lambda 72개가 사진마다 직접 DB에 씀</b></div>
-        <p>행 잠금을 풀자 다른 쓰기가 드러났다. pg_stat_statements로 보니 임베더 Lambda 72개가 사진마다 분석 결과 INSERT와 미리보기 UPDATE를 각자 날리고 있었고, 이것이 <strong>DB 시간의 56.8%</strong>였다. 경합이 아니라 쓰는 주체와 횟수 자체가 많은 문제.</p>
-        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>SQS 결과 큐 + writer Lambda</b></div>
-        <p>임베더 Lambda는 결과를 DB에 직접 쓰지 않고 SQS 결과 큐에 넣는다. 별도의 <strong>writer Lambda</strong>(동시 최대 2개)가 큐에서 10건씩 묶어 가져가 DB에 쓴다. DB에 붙는 쪽이 임베더 <strong>72개에서 writer 2개</strong>로 줄었다. p95 <strong>19,106 → 6,056ms</strong>, DB 쿼리 시간 합계 <strong>−94%</strong>, RDS CPU <strong>88% → 19~41%</strong>.</p></div></li>
-      <li><div><div class="st-h"><span class="tag find">발견</span><b>JFR: 앱 CPU의 63.7%가 사진 조회용 presigned URL 생성</b></div>
-        <p>S3에 있는 사진을 브라우저가 직접 받으려면 사진마다 기한이 있는 presigned URL(서명이 붙은 임시 주소)이 필요하다. 사진 목록 한 페이지(200장)를 줄 때마다 같은 사진의 presigned URL을 매번 새로 만들고 있었고, JFR로 보니 이 서명 계산이 앱 CPU 표본의 <strong>63.7%</strong>였다.</p>
-        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>presigned URL 10분 재사용 캐시</b></div>
-        <p>한 번 만든 URL을 10분 동안 다시 쓴다. URL 1,542자 중 사진마다 다른 건 서명 시각과 서명 값뿐이라 공통 부분은 공유하고 둘만 저장했다(항목 약 250B, 캐시 적중 0.44µs vs 새로 생성 102.7µs). p95 <strong>6,056 → 51ms</strong>.</p></div></li>
-      <li><div><div class="st-h"><span class="tag do">결정</span><b>Lambda가 끝내 실패하면 DLQ로 받아 바로 재처리</b></div>
-        <p>분석 Lambda는 재시도 후에도 실패하면 그 호출을 SQS 실패 큐(DLQ)에 남기도록 하고, 서버가 이 큐를 읽어 실패한 작업을 재전송 대기 시간까지 기다리지 않고 바로 다시 보내게 했다.</p>
-        <div class="st-h" style="margin-top:8px"><span class="tag ok">검증</span><b>장애를 일부러 넣어 재처리 경로 확인</b></div>
-        <p>실제 Lambda 오류율이 높아서가 아니라, 이 경로가 동작하는지 보려고 Lambda 호출의 2%가 받자마자 죽도록 장애를 주입했다. 분류 단계 재처리 <strong>1,222초 → 24초</strong>, 잃은 작업 <strong>0</strong>, DLQ에 쌓인 실패 22건을 모두 재처리.</p></div></li>
-      <li><div><div class="st-h"><span class="tag find">발견</span><b>캐시로도 남는 문제: presigned URL은 계속 바뀐다</b></div>
-        <p>서버가 2대가 되면서 두 서버가 캐시를 함께 쓰도록 Redis(Valkey) 공유 캐시까지 붙였다. 그래도 문제가 남았다.</p>
-        <ul>
-          <li>presigned URL은 보안상 오래 둘 수 없어 10분마다 바뀌고, 웹은 12분마다 목록을 다시 받아 주소를 모두 갈아 끼웠다. 브라우저는 주소가 바뀐 사진을 새 사진으로 보고 <strong>이미 본 사진도 다시 받았다</strong>(한 페이지에 1시간 머무는 측정에서 112MB, 주소가 고정이면 13MB)</li>
-          <li>서명이 바뀔 때마다 캐시도 다시 채워야 했다</li>
-        </ul>
-        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>미리보기는 CloudFront 고정 주소 + 갤러리 단위 서명 쿠키</b></div>
-        <p>미리보기 이미지를 CDN의 바뀌지 않는 주소로 주고, 볼 권한은 갤러리 단위 서명 쿠키로 확인한다. 주소가 고정이라 브라우저 캐시가 그대로 살고, 서명 URL 캐시와 Valkey는 필요 없어져 걷어냈다.</p></div></li>
-    </ol>
-
-    <div class="part" data-n="3">결과</div>
-    <div class="chart bars">
-      <p class="msg">원인 두 개를 차례로 걷어내자 p95가 19.1초에서 51ms로</p>
-      <div class="row"><div class="lab"><b>기준선</b><span>Lambda 72개가 각자 DB에 씀</span></div><div class="track"><div class="bar b" style="width:70%"></div><span class="val">19,106ms</span></div></div>
-      <div class="row"><div class="lab"><b>① SQS 결과 큐</b><span>writer Lambda 2개가 묶어 씀</span></div><div class="track"><div class="bar m" style="width:22.2%"></div><span class="val">6,056ms<em>−68%</em></span></div></div>
-      <div class="row"><div class="lab"><b>② presigned URL 캐시</b><span>URL 매번 생성 제거</span></div><div class="track"><div class="bar a" style="width:0.2%"></div><span class="val">51ms<em>기준선의 1/375</em></span></div></div>
-      <p class="note">같은 대본 · 부부 200명 · 갤러리 5개 동시 업로드 중 · 막대는 선형</p>
-    </div>
-    <div class="tbl"><table class="res">
-      <tr><th>항목</th><th>결과</th></tr>
-      <tr><td>셀렉 요청 p95 (200명)</td><td>19,106 → 6,056 → 51ms, 오류 0% · 400명도 67ms</td></tr>
-      <tr><td>DB</td><td>쿼리 처리 시간 합계 −94%, RDS CPU 88% → 19~41%</td></tr>
-      <tr><td>장애 주입 재처리</td><td>1,222초 → 24초, 잃은 작업 0, 실패 기록 22건 = 재처리 22건</td></tr>
-      <tr><td>CDN 전환</td><td>이미 본 사진 다시 받기 499장 → 0. 응답 속도는 presigned URL 캐시 때와 비슷한 수준을 유지하면서, Valkey를 빼 월 $14 절감</td></tr>
-    </table></div>
-
-    <div class="part" data-n="4">한계</div>
-    <ul class="prob">
-      <li>CloudFront는 사용량 과금이다. 인터넷으로 나가는 전송량(GB)과 HTTPS 요청 수 기준으로 과금되고, 매달 전송 1TB · 요청 1,000만 건까지는 무료다. S3에서 CloudFront로 가져오는 전송은 과금되지 않는다</li>
-    </ul>
-  </article>
-
   <article class="case" id="es-3">
-    <div class="num"><span class="badge">개선 3</span>이지셀렉(Easy Select)</div>
+    <div class="num"><span class="badge">개선 4</span>이지셀렉(Easy Select)</div>
     <h3>힙을 줄였는데도 Full GC 19.6초, 원인은 JVM 몸집이었다 → 0.45초</h3>
     <p class="summary">업로드 중 앱이 26초 멈춤 → "힙이 크다"는 첫 가설은 측정으로 기각 → JVM 내장 메모리 추적(NMT)으로 힙 밖을 재 보니 JVM 전체가 RAM보다 큼 → 서버 2GB + G1 → Full GC 19.6초 → 0.45초</p>
     <div class="stats">
@@ -393,91 +479,6 @@
     </table></div>
   </article>
 
-  <article class="case" id="es-4">
-    <div class="num"><span class="badge">개선 4</span>이지셀렉(Easy Select)</div>
-    <h3>Lambda 샤딩의 한계를 계측으로 확인하고 GPU 워커로 전환, 비용 1/24</h3>
-    <p class="summary">품질 점수 단계가 Lambda 15분 제한에 걸림 → 샤딩으로 9.7분까지 줄인 뒤 더는 못 줄이는 벽 3개를 확인 → 후보를 같은 갤러리로 비교해 GPU 워커 2대 → 3.9분, 비용 1/24, 꺼지지 않을 때를 대비한 4겹</p>
-    <div class="stats">
-      <div class="stat"><span class="v">9.7분 → 3.9분</span><span class="k">품질 점수 단계 전체 소요 시간</span></div>
-      <div class="stat"><span class="v">$1.53 → $0.063</span><span class="k">같은 갤러리 1회 비용 (1/24)</span></div>
-      <div class="stat"><span class="v">61 → 29</span><span class="k">RDS 연결 피크</span></div>
-    </div>
-
-    <figure class="eli5"><svg viewBox="0 0 1000 372" role="img" aria-label="개선 전에는 Lambda 샤드 32개가 각각 DB 연결을 잡고 150장씩 처리해 9.7분과 1.53달러가 들었고 더 줄일 수 없었다. 개선 후에는 앱 서버가 EC2 g6.xlarge GPU 워커를 켜고 끄며, 디코드 스레드 4개가 전처리를 미리 해 GPU 사용률을 97%까지 올리고, 안전망 4겹으로 꺼짐을 보장해 3.9분과 0.063달러가 되었다"><defs><marker id="e4-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker><marker id="e4-ar-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c6422c"/></marker><marker id="e4-ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f4fd8"/></marker></defs><g color="#2e3036"><path d="M478 190 L522 190" stroke="#15161a" stroke-width="2" fill="none" marker-end="url(#e4-ar)"/><text x="20" y="26" font-size="14" fill="#c6422c" font-weight="600">개선 전 · Lambda 샤딩 32개, 더는 못 줄인다</text><rect x="30" y="120" width="100" height="80" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="80.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">갤러리</text><text x="80.0" y="160" font-size="11" fill="#6b6f78" text-anchor="middle">7,189장</text><text x="80.0" y="176" font-size="11" fill="#6b6f78" text-anchor="middle">장당 1.52초</text><path d="M136 160 L186 90" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="70" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="92" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 1</text><path d="M306 90 L356 90" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><path d="M136 160 L186 140" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="120" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 2</text><path d="M306 140 L356 140" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><path d="M136 160 L186 190" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="170" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="192" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 3</text><path d="M306 190 L356 190" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><path d="M136 160 L186 240" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><rect x="190" y="220" width="110" height="40" rx="6" fill="#fff" stroke="#c6422c" stroke-width="1.2"/><text x="245.0" y="242" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">Lambda 샤드 32</text><path d="M306 240 L356 240" stroke="#c6422c" stroke-width="1.2" fill="none" marker-end="url(#e4-ar-b)"/><text x="245" y="150" font-size="14" fill="#c6422c" text-anchor="middle">…</text><text x="245" y="272" font-size="10.5" fill="#6b6f78" text-anchor="middle">150장씩 · 최대 32개</text><rect x="360" y="120" width="80" height="80" rx="6" fill="#fbe9e5" stroke="#c6422c" stroke-width="2"/><text x="400.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="400.0" y="160" font-size="11" fill="#c6422c" text-anchor="middle">연결 피크</text><text x="400.0" y="176" font-size="11" fill="#c6422c" text-anchor="middle">61 / 79</text><text x="400" y="112" font-size="10" fill="#c6422c" text-anchor="middle">샤드마다 DB 연결</text><text x="30" y="300" font-size="11" fill="#6b6f78">직렬 Lambda: 15분 제한에 걸려 40분 넘어도 미완주(100분+)</text><text x="30" y="318" font-size="11" fill="#c6422c" font-weight="600">샤딩: 9.7분 · $1.53. 가장 느린 샤드가 1.7배 느리고, 연산 총량은 그대로라 비용도 그대로</text><text x="30" y="340" font-size="10.5" fill="#6b6f78">같은 갤러리로 후보 비교: SageMaker T4 9.4분(시간 기준 미달) · L4 5.6분(기동 지연 큼)</text><text x="30" y="356" font-size="10.5" fill="#6b6f78">AMI에서 매번 띄우기는 모델 로드 250초로 탈락 → EC2 g6.xlarge 켜기/끄기</text><text x="540" y="26" font-size="14" fill="#1f4fd8" font-weight="600">개선 후 · GPU 워커 1대를 켜고 끈다</text><rect x="540" y="120" width="110" height="80" rx="6" fill="#fff" stroke="#2e3036" stroke-width="1.5"/><text x="595.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">앱 서버</text><text x="595.0" y="160" font-size="11" fill="#6b6f78" text-anchor="middle">켜기 · 끄기</text><text x="595.0" y="176" font-size="11" fill="#6b6f78" text-anchor="middle">제어</text><path d="M656 150 L686 150" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><text x="671" y="140" font-size="10.5" fill="#1f4fd8" text-anchor="middle">켬</text><rect x="690" y="60" width="200" height="180" rx="6" fill="#e6ecfb" stroke="#1f4fd8" stroke-width="2"/><text x="790" y="84" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">EC2 g6.xlarge · GPU 워커</text><rect x="704" y="98" width="172" height="52" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1"/><text x="790" y="118" font-size="11.5" fill="#15161a" font-weight="600" text-anchor="middle">디코드 스레드 4개</text><text x="790" y="134" font-size="10.5" fill="#6b6f78" text-anchor="middle">전처리를 미리 해 둠</text><path d="M790 150 L790 162" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><rect x="704" y="166" width="172" height="60" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1"/><text x="790" y="186" font-size="11" fill="#15161a" font-weight="600" text-anchor="middle">GPU 정규화 + 점수(CLIP · ARNIQA)</text><text x="790" y="204" font-size="11" fill="#1f4fd8" font-weight="600" text-anchor="middle">사용률 51% → 97~98%</text><text x="790" y="218" font-size="9.5" fill="#6b6f78" text-anchor="middle">(절반 놀던 GPU를 채움)</text><path d="M896 150 L926 150" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><rect x="930" y="120" width="50" height="60" rx="6" fill="#fff" stroke="#1f4fd8" stroke-width="1.5"/><text x="955.0" y="142" font-size="12.5" fill="#15161a" font-weight="600" text-anchor="middle">RDS</text><text x="955.0" y="160" font-size="11" fill="#1f4fd8" text-anchor="middle">피크</text><text x="955.0" y="176" font-size="11" fill="#1f4fd8" text-anchor="middle">29</text><path d="M790 240 L790 262" stroke="#1f4fd8" stroke-width="1.5" fill="none" marker-end="url(#e4-ar-a)"/><text x="804" y="256" font-size="10.5" fill="#1f4fd8">끝나면 스스로 끔</text><text x="540" y="286" font-size="11" fill="#c6422c" font-weight="600">꺼지지 않으면 시간당 $0.99 × 2대 = 월 $1,424 → 안전망 4겹을 서로 다른 곳에</text><rect x="540" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="592" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">워커 자기 정지</text><text x="592" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">워커</text><rect x="652" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="704" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">서버 안전망</text><text x="704" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">앱 서버</text><rect x="764" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="816" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">CloudWatch 알람</text><text x="816" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">AWS</text><rect x="876" y="296" width="104" height="34" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="1.2"/><text x="928" y="310" font-size="10.5" fill="#15161a" font-weight="600" text-anchor="middle">systemd failsafe</text><text x="928" y="324" font-size="9.5" fill="#6b6f78" text-anchor="middle">OS</text><text x="540" y="350" font-size="11" fill="#1f4fd8" font-weight="600">실제 사고 3건마다 겹을 보강 · 결과: 점수 단계 9.7분 · $1.53 → 3.9분 · $0.063 (1/24)</text></g></svg><figcaption><b>잘게 쪼개 병렬로 돌리는 대신, 큰 GPU 하나를 필요할 때만 켜고 반드시 끄게 했다.</b> 왼쪽은 샤드를 늘려도 연산 총량과 DB 연결이 그대로인 구조, 오른쪽은 GPU 한 대를 꽉 채워 쓰고 꺼짐을 네 곳에서 보장하는 구조.</figcaption></figure>
-    <div class="part" data-n="1">문제</div>
-    <ul class="prob">
-      <li>사진마다 미학 점수(CLIP)와 화질 점수(ARNIQA)를 매기는 단계가 장당 1.52초(CLIP 0.68 + ARNIQA 0.80)</li>
-      <li>Lambda 15분 제한에 걸려 822장도 13.9분에 512장까지만, 실제 갤러리 7,189장은 40분이 넘어도 미완주</li>
-    </ul>
-
-    <div class="part" data-n="2">개선 과정</div>
-    <ol class="steps">
-      <li><div><div class="st-h"><span class="tag do">시도</span><b>Lambda 샤딩: 150장씩 최대 32개 동시 실행 → 9.7분</b></div></div></li>
-      <li><div><div class="st-h"><span class="tag find">발견</span><b>샤드를 늘려도 안 되는 벽 3개 (단계별 시간 로그)</b></div>
-        <ul>
-          <li><b>샤드 수가 유일한 손잡이:</b> 장당 1.45초는 vCPU 연산 몫이라 샤드 하나의 속도는 못 올리고, 전체 시간은 샤드를 늘려야만 줄었다</li>
-          <li><b>그런데 DB가 샤드 수를 막음:</b> 샤드마다 DB 연결을 끝까지 잡아 RDS 피크 61/79. DB 최대 연결 수가 곧 샤드 상한이라 32개에서 더 늘릴 수 없었다</li>
-          <li><b>호스트 편차:</b> 같은 코드가 샤드마다 1.7배 느림(중앙값 341초 vs 최장 580초), 가장 느린 샤드가 전체 소요 시간을 정함</li>
-          <li>샤딩은 기다리는 시간만 줄일 뿐 쓴 연산 총량은 그대로라 비용도 그대로</li>
-        </ul></div></li>
-      <li><div><div class="st-h"><span class="tag do">결정</span><b>후보 런타임을 같은 갤러리로 측정해 비교</b></div>
-        
-        <div class="tbl"><table>
-          <tr><th>런타임</th><th>점수 단계</th><th>1회 비용</th><th>판단</th></tr>
-          <tr><td>Lambda 32샤드 (기준)</td><td>9.7분</td><td>$1.53</td><td>—</td></tr>
-          <tr><td>SageMaker g4dn(T4)</td><td>9.4분</td><td>$0.115</td><td>시간 기준 미달</td></tr>
-          <tr><td>SageMaker g6(L4)</td><td>5.6분</td><td>$0.109</td><td>통과, 단 제출부터 컨테이너 기동이 큼</td></tr>
-          <tr><td>RunPod (외부 GPU)</td><td>—</td><td>예상 약 $0.11~0.16 (전송비 포함)</td><td>AWS 밖이라 사진 전송비와 비공개 DB 연결 부담이 들어 측정 전에 제외</td></tr>
-          <tr><td>AMI에서 매번 새로 띄우기</td><td>9.5분</td><td>—</td><td>모델 로드 250초(디스크 지연 로드)로 탈락</td></tr>
-          <tr class="pick"><td>EC2 g6.xlarge 켜기/끄기 (선택)</td><td>3.9분</td><td>약 $0.063</td><td>g6는 정지에 약 350초 → 바로 못 다시 켜서 2대 풀</td></tr>
-        </table></div></div></li>
-      <li><div><div class="st-h"><span class="tag find">발견</span><b>GPU가 절반 놀고 있었다 (사용률 51%)</b></div>
-        <p>GPU가 점수를 계산하는 동안, 다음 사진을 모델 입력으로 바꾸는 CPU 전처리(CLIP용 224px 리사이즈, ARNIQA용 실수 변환)를 메인 스레드가 순서대로 하고 있었다. 그래서 GPU는 전처리가 끝나기를 기다리며 절반을 놀았다.</p>
-        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>전처리를 GPU 계산과 겹치게</b></div>
-        <ul>
-          <li>사진 디코드 · 리사이즈를 별도 디코드 스레드 4개가 미리 해 두고(프리페치), 메인 스레드는 GPU에 넘기기만 함</li>
-          <li>무거운 정규화 계산은 CPU 대신 GPU에서 처리</li>
-          <li>결과: GPU 사용률 51% → <strong>97~98%</strong>, 점수 계산 399 → 241초</li>
-        </ul>
-        <div class="st-h" style="margin-top:8px"><span class="tag do">결정</span><b>콜드 기동 75초 → 16초</b></div>
-        <p>기본 딥러닝 AMI가 부팅 때마다 GPU 드라이버 모듈 재빌드(dkms, 56초)와 로그인 안내문 갱신(motd, 30초)을 돌리고 있었다. 워커에 필요 없는 두 서비스를 끄고, 이후 필요한 것만 담은 자체 AMI로 교체했다.</p></div></li>
-      <li><div><div class="st-h"><span class="tag ok">검증</span><b>fp16 전환을 7,189장 전수 대조</b></div>
-        <p>fp16(절반 정밀도)은 빠른 대신 점수 값이 아주 조금 달라질 수 있다. 셀렉에서 중요한 건 점수의 순서라, 7,189장을 기존 방식과 fp16으로 각각 채점해 순위가 얼마나 같은지(순위 상관, 1이면 순서가 완전히 같음)를 비교했다. 1.0000 · 0.9999로 순서가 같아 모델 버전을 바꾸지 않았다.</p></div></li>
-      <li><div><div class="st-h"><span class="tag fail">버림</span><b>화질 점수 모델(ARNIQA)의 입력 해상도 낮추기</b></div>
-        <p>입력 사진을 줄이면 빨라지지만, 운영 입력은 이미 1024px로 압축된 미리보기였다. 여기서 더 줄이면 지금 점수와의 순위 상관이 <strong>0.638(896px) · 0.536(768px)</strong>으로 떨어져 화질 순서가 뒤바뀐다. 1024px을 유지했다.</p></div></li>
-      <li><div><div class="st-h"><span class="tag do">결정</span><b>꺼지지 않을 때를 대비한 4겹</b></div>
-        <p>g6.xlarge는 시간당 약 $0.99. 정지가 모두 실패해 2대가 계속 켜지면 월 $1,424, 꺼져 있으면 월 $7. 끄는 장치를 서로 다른 곳에 두었다.</p>
-        <div class="tbl"><table>
-          <tr><th>겹</th><th>조건</th><th>위치</th></tr>
-          <tr><td>① 워커 자기 정지</td><td>처리할 사진 없음 30초</td><td>AI 워커</td></tr>
-          <tr><td>② 서버 안전망</td><td>남은 일 0 · 기동 5분 지남 · 2분 진행 없음</td><td>앱 서버</td></tr>
-          <tr><td>③ CloudWatch 알람</td><td>CPU 5% 미만 30분, 인스턴스 ID로만(태그 기준이면 평소 CPU가 낮은 앱 서버까지 꺼짐)</td><td>인프라</td></tr>
-          <tr><td>④ systemd failsafe</td><td>10분 안에 3번 기동 실패하면 자기 인스턴스 정지</td><td>인스턴스</td></tr>
-        </table></div></div></li>
-      <li><div><div class="st-h"><span class="tag fail">사고</span><b>실제 사고 3건, 사고마다 겹을 보강</b></div>
-        <ul>
-          <li><b>18분 헛돎:</b> 인자 변환 오류로 0장을 처리하며 18분 돌아 사람이 껐다 → 연속 5번 실패하면 워커가 스스로 멈추게 함</li>
-          <li><b>자기 정지 실패:</b> 컨테이너에 리전 설정이 없어 워커의 정지 요청이 실패했고, 서버 안전망이 대신 껐다 → 리전을 인스턴스 정보에서 읽게 고쳐 30초 만에 스스로 꺼지는 것을 확인</li>
-          <li><b>디스크 부족:</b> 옛 워커 이미지가 쌓여 디스크 30GB 중 20.7GB를 차지해 새 이미지를 못 받았다. failsafe가 그 인스턴스를 끄고 두 번째 워커가 처리해 데이터 손실은 0 → 기동 때 옛 이미지를 지우게 고침</li>
-        </ul></div></li>
-    </ol>
-
-    <div class="part" data-n="3">결과</div>
-    <div class="chart bars">
-      <p class="msg">같은 갤러리 7,189장을 끝까지 처리하는 시간과 원가</p>
-      <div class="row"><div class="lab"><b>직렬 Lambda</b><span>15분 제한에 걸려 미완주</span></div><div class="track"><div class="bar open" style="width:70%"></div><span class="val">100분+</span></div></div>
-      <div class="row"><div class="lab"><b>Lambda 샤딩 32</b><span>vCPU · 연결 · 호스트 편차의 벽</span></div><div class="track"><div class="bar m" style="width:12.8%"></div><span class="val">18.3분<em>$1.94</em></span></div></div>
-      <div class="row"><div class="lab"><b>GPU 워커 2대</b><span>50장 배치 · SKIP LOCKED</span></div><div class="track"><div class="bar a" style="width:4.5%"></div><span class="val">6분 26초<em>$0.45</em></span></div></div>
-      <p class="note">업로드 시작부터 컨셉 폴더 완성까지(전체 파이프라인) · 원가는 S3 요청 포함 · 막대는 선형(100분 = 70% 폭)</p>
-    </div>
-    <div class="tbl"><table class="res">
-      <tr><th>항목</th><th>결과</th></tr>
-      <tr><td>점수 단계 (벤치)</td><td>9.7분 · $1.53 → 3.9분 · $0.063, 장당 1.45초 → 0.021초(69배)</td></tr>
-      <tr><td>RDS 연결 피크</td><td>61 → 29</td></tr>
-      <tr><td>GPU 사용률 · 콜드 기동</td><td>51% → 97~98% · 75초 → 16초</td></tr>
-      <tr><td>전체 파이프라인 (7,189장)</td><td>100분+ → 6분 26초, 원가 $1.94 → $0.45</td></tr>
-    </table></div>
-  </article>
 </section>
 
 <!-- ───────────── 02 그래빗 ───────────── -->

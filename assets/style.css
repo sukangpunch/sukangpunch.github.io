@@ -412,6 +412,7 @@ ol.steps ul { margin: 6px 0 0; padding-left: 18px; font-size: 15px; line-height:
 .vchart .note { margin-top: 34px; }
 @media (max-width: 640px) { .vps { grid-template-columns: 1fr; gap: 44px; } .vb { width: 36px; } }
 
+
 /* eli5 */
 .case figure.eli5{ margin: 14px 0 8px; display: grid; gap: 6px; }
 .case figure.eli5 svg{ display: block; width: 100%; height: auto; font-family: inherit; }
